@@ -127,6 +127,9 @@ Delete query examples:
 // delete all
 $affected_rows = pdom('users:del'); // DELETE FROM users
 
+// can also use action ':delete'
+// pdom('users:delete', ...);
+
 // DELETE FROM users WHERE is_active = 1
 $affected_rows = pdom('users:del', 'WHERE is_active = 1');
 
