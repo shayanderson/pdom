@@ -57,6 +57,23 @@ $r = pdom('users.2'); // SELECT * FROM users WHERE id = '2'
 $r = pdom('users(fullname, is_active).2', 'AND created > ? LIMIT 1', ['NOW()']);
 ```
 
+### Custom Table Primary Key Column Name
+By default the primary key column named used when selecting with key is 'id'
+This can be changed using the this command:
+```php
+// register 'user_id' as key column name for table 'users'
+pdom('users:key', 'user_id');
+
+// now 'WHERE id = 2' becomes 'WHERE user_id = 2'
+$r = pdom('users.2'); // SELECT * FROM users WHERE user_id = '2'
+
+// also can use 'keys' command to register multiple key column names:
+pdom(':keys', [
+	'users' => 'user_id',
+	'orders' => 'order_id'
+]);
+```
+
 ### Select Distinct
 Select distinct example query:
 ```php
@@ -235,7 +252,7 @@ if(pdom(':error'))
 ```
 
 ### Debugging
-To display all registered connections, debug log and errors use:
+To display all registered connections, mapped keys, debug log and errors use:
 ```php
 print_r( pdom(null) ); // returns array with debug info
 ```
