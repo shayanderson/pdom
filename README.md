@@ -57,23 +57,6 @@ $r = pdom('users.2'); // SELECT * FROM users WHERE id = '2'
 $r = pdom('users(fullname, is_active).2', 'AND created > ? LIMIT 1', ['NOW()']);
 ```
 
-### Custom Table Primary Key Column Name
-By default the primary key column named used when selecting with key is 'id'
-This can be changed using the this command:
-```php
-// register 'user_id' as key column name for table 'users'
-pdom('users:key', 'user_id');
-
-// now 'WHERE id = 2' becomes 'WHERE user_id = 2'
-$r = pdom('users.2'); // SELECT * FROM users WHERE user_id = '2'
-
-// also can use 'keys' command to register multiple key column names:
-pdom(':keys', [
-	'users' => 'user_id',
-	'orders' => 'order_id'
-]);
-```
-
 ### Select Distinct
 Select distinct example query:
 ```php
@@ -97,7 +80,7 @@ Insert query and get insert ID:
 pdom('users:add', ['fullname' => 'Name Here', 'is_active' => 1, 'created' => ['NOW()']]);
 
 // get insert ID
-$insert_id = pdom('users:id');
+$insert_id = pdom(':id');
 ```
 
 ### Insert Ignore
@@ -195,6 +178,23 @@ pdom(':query', 'SET @out = "";'); // set out param
 pdom('users:call', 'sp_addUserGetId', 'Name Here', 1, ['NOW()'], ['@out']);
 // get out param value
 $r = pdom(':query', 'SELECT @out;');
+```
+
+### Custom Table Primary Key Column Name
+By default the primary key column named used when selecting with key is 'id'.
+ This can be changed using the 'key' or 'keys' command:
+```php
+// register 'user_id' as primary key column name for table 'users'
+pdom('users:key', 'user_id');
+
+// now 'WHERE id = 2' becomes 'WHERE user_id = 2'
+$r = pdom('users.2'); // SELECT * FROM users WHERE user_id = '2'
+
+// also can use 'keys' command to register multiple key column names:
+pdom(':keys', [
+	'users' => 'user_id',
+	'orders' => 'order_id'
+]);
 ```
 
 ### Show Tables
