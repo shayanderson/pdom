@@ -260,3 +260,25 @@ To display all registered connections, mapped keys, debug log and errors use:
 ```php
 print_r( pdom(null) ); // returns array with debug info
 ```
+
+### Multiple Database Connections
+Using multiple database connections is easy, register database connections in bootstrap:
+```php
+// connection 1 (default connection)
+pdom(['host' => 'host1.server.com', 
+	// more here
+]);
+
+// connection 2
+pdom(['host' => 'host2.server.com', 
+	// more here
+]);
+```
+Now using different connections use:
+```php
+// select from connection 1 / default connection
+$r = pdom('users.2'); // SELECT * FROM users WHERE id = '2'
+
+// select from connection 2, where '[n]' is connection ID
+$r2 = pdom('[2]users.2'); // SELECT * FROM users WHERE id = '2'
+```
