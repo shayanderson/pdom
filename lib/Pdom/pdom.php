@@ -44,7 +44,7 @@ use Pdom\Pdo;
  *		tables		(show database tables)
  *		truncate	(truncate table)
  */
-function pdom($cmd = 1, $_ = null)
+function pdom($cmd, $_ = null)
 {
 	if(is_array($cmd)) // connection/config
 	{
