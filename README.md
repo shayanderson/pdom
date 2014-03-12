@@ -93,6 +93,7 @@ pdom('users:add/ignore', ['user_id' => 3, 'fullname' => 'Name Here']);
 ### Inserting Objects
 Insert into table using object instead of array:
 ```php
+// note: all class public properties must be table column names
 class User
 {
 	public $user_id = 70;
