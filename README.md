@@ -274,7 +274,7 @@ pdom(['host' => 'host2.server.com',
 	// more here
 ]);
 ```
-Now using different connections use:
+Now to use different connections:
 ```php
 // select from connection 1 / default connection
 $r = pdom('users.2'); // SELECT * FROM users WHERE id = '2'
