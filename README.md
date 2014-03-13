@@ -318,7 +318,7 @@ $pg = isset($_GET['pg']) ? (int)$_GET['pg'] : 1;
 // next set 10 Records Per Page (rpp) and current page number
 pdom(':pagination', ['rpp' => 10, 'page' => $pg]);
 
-// execute SELECT query with pagination (SELECT query cannot have LIMIT clause)
+// execute SELECT query with pagination (SELECT query cannot contain LIMIT clause)
 // SELECT DISTINCT id, fullname FROM users WHERE LENGTH(fullname) > '0' LIMIT x, y
 $r = pdom('users(id, fullname)/distinct/pagination', 'WHERE LENGTH(fullname) > ?', [0]);
 // $r['pagination'] contains pagination values: rpp, page, next, prev, offset
