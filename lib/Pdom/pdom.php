@@ -73,6 +73,7 @@ function pdom($cmd, $_ = null)
 		$id = 1; // default ID
 		$params = [];
 		$option = null;
+		$is_return_qs = false;
 
 		if(preg_match('/^\[(\d+)\].*/', $cmd, $m)) // match '[id]table', connection ID?
 		{
@@ -80,10 +81,21 @@ function pdom($cmd, $_ = null)
 			$cmd = preg_replace('/^\[(\d+)\]/', '', $cmd);
 		}
 
-		if(preg_match('/\/([a-z]+)$/', $cmd, $m)) // match '...xyz/option'
+		if(preg_match_all('/\/([a-zA-Z_]+)/', $cmd, $m)) // match '...xyz/option'
 		{
-			$option = $m[1];
-			$cmd = preg_replace('/\/[a-z]+$/', '', $cmd);
+			foreach($m[1] as $opt)
+			{
+				$opt = strtoupper($opt);
+				if($opt === 'QUERY') // return query only
+				{
+					$is_return_qs = true;
+				}
+				else
+				{
+					$option .= ' ' . $opt;
+				}
+			}
+			$cmd = preg_replace('/\/[a-zA-Z_]+/', '', $cmd);
 		}
 
 		if(strpos($cmd, ':') === false) // SELECT command
@@ -115,9 +127,16 @@ function pdom($cmd, $_ = null)
 				$params = array_merge($params, $args[1]);
 			}
 
-			return Pdo::connection($id)->query('SELECT '
-				. ( $option === 'distinct' ? 'DISTINCT ' : '' ) // option
-				. $columns . ' FROM ' . $cmd . $sql, $params);
+			$q = 'SELECT' . $option . ' ' . $columns . ' FROM ' . $cmd . $sql;
+
+			if($is_return_qs)
+			{
+				return $q;
+			}
+			else
+			{
+				return Pdo::connection($id)->query($q, $params);
+			}
 		}
 		else // parse command
 		{
@@ -153,11 +172,18 @@ function pdom($cmd, $_ = null)
 						}
 					}
 
-					return Pdo::connection($id)->query('INSERT '
-						. ( $option === 'ignore' ? 'IGNORE ' : '' )
-						. 'INTO ' . $table . '('
+					$q = 'INSERT' . $option . ' INTO ' . $table . '('
 						. implode(', ', array_keys($args[0])) . ') VALUES('
-						. implode(', ', $values) . ')', $params);
+						. implode(', ', $values) . ')';
+
+					if($is_return_qs)
+					{
+						return $q;
+					}
+					else
+					{
+						return Pdo::connection($id)->query($q, $params);
+					}
 					break;
 
 				case 'call': // call SP/SF
@@ -177,8 +203,16 @@ function pdom($cmd, $_ = null)
 						}
 					}
 
-					return Pdo::connection($id)->query('CALL '
-						. ( isset($args[0]) ? $args[0] : '' ) . '(' . $params_str . ')', $params);
+					$q = 'CALL ' . ( isset($args[0]) ? $args[0] : '' ) . '(' . $params_str . ')';
+
+					if($is_return_qs)
+					{
+						return $q;
+					}
+					else
+					{
+						return Pdo::connection($id)->query($q, $params);
+					}
 					break;
 
 				case 'columns': // show columns
@@ -217,11 +251,17 @@ function pdom($cmd, $_ = null)
 
 				case 'del': // delete
 				case 'delete':
-					return Pdo::connection($id)->query('DELETE '
-						. ( $option === 'ignore' ? 'IGNORE ' : '' )
-						. 'FROM ' . $table
-						. ( isset($args[0]) ? ' ' . $args[0] : '' ),
-						isset($args[1]) ? $args[1] : null);
+					$q = 'DELETE' . $option . ' FROM ' . $table
+						. ( isset($args[0]) ? ' ' . $args[0] : '' );
+
+					if($is_return_qs)
+					{
+						return $q;
+					}
+					else
+					{
+						return Pdo::connection($id)->query($q, isset($args[1]) ? $args[1] : null);
+					}
 					break;
 
 				case 'error': // error check
@@ -282,10 +322,17 @@ function pdom($cmd, $_ = null)
 						$params = array_merge($params, $args[2]);
 					}
 
-					return Pdo::connection($id)->query('UPDATE '
-						. ( $option === 'ignore' ? 'IGNORE ' : '' )
-						. $table . ' SET ' . implode(', ', $values)
-						. ( isset($args[1]) ? ' ' . $args[1] : '' ), $params);
+					$q = 'UPDATE' . $option . ' ' . $table . ' SET ' . implode(', ', $values)
+						. ( isset($args[1]) ? ' ' . $args[1] : '' );
+
+					if($is_return_qs)
+					{
+						return $q;
+					}
+					else
+					{
+						return Pdo::connection($id)->query($q, $params);
+					}
 					break;
 
 				case 'optimize': // optimize table

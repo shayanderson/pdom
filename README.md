@@ -261,6 +261,29 @@ To display all registered connections, mapped keys, debug log and errors use:
 print_r( pdom(null) ); // returns array with debug info
 ```
 
+### Query Options
+Query options are used like: *table:command/[option]* and can be used with SELECT commands and these commands:
+*add/insert*
+*call*
+*del/delete*
+*mod/update*
+
+Example of option use:
+```php
+$r = pdom('users(fullname)/distinct'); // DISTINCT option
+```
+
+The *query* option can be used to return the query string only, without executing the query (for debugging), for example:
+```php
+$r = pdom('users(fullname)/distinct/query'); // returns string 'SELECT DISTINCT fullname FROM users'
+```
+
+Options can be chained together to complete valid MySQL statements:
+```php
+// UPDATE LOW_PRIORITY IGNORE users SET fullname = 'Shay Anderson' WHERE user_id = '2'
+$affected_rows = pdom('users:mod/low_priority/ignore', ['fullname' => 'Shay Anderson'], 'WHERE user_id = :user_id', ['user_id' => 2]);
+```
+
 ### Multiple Database Connections
 Using multiple database connections is easy, register database connections in bootstrap:
 ```php
