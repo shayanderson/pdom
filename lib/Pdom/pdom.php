@@ -20,6 +20,7 @@ use Pdom\Pdo;
  *
  * @author Shay Anderson 03.14 <http://www.shayanderson.com/contact>
  *
+ * @staticvar array $pagination
  * @param string $cmd
  * @param mixed $_ (optional values)
  * @return mixed
@@ -72,8 +73,9 @@ function pdom($cmd, $_ = null)
 
 		$id = 1; // default ID
 		$params = [];
+		static $pagination = ['rpp' => 10, 'page' => 1];
 		$option = null;
-		$is_return_qs = false;
+		$is_return_qs = $is_pagination = false;
 
 		if(preg_match('/^\[(\d+)\].*/', $cmd, $m)) // match '[id]table', connection ID?
 		{
@@ -89,6 +91,10 @@ function pdom($cmd, $_ = null)
 				if($opt === 'QUERY') // return query only
 				{
 					$is_return_qs = true;
+				}
+				else if($opt === 'PAGINATION')
+				{
+					$is_pagination = true;
 				}
 				else
 				{
@@ -129,13 +135,51 @@ function pdom($cmd, $_ = null)
 
 			$q = 'SELECT' . $option . ' ' . $columns . ' FROM ' . $cmd . $sql;
 
+			if($is_pagination)
+			{
+				// match 'LIMIT x, y (OFFSET z)?', only allow if no LIMIT
+				if(!preg_match('/LIMIT[\s\d,]+(OFFSET[\s\d]+)?$/i', $q))
+				{
+					$p = ['rpp' => $pagination['rpp'], 'page' => $pagination['page'],
+						'next' => 0, 'prev' => 0, 'offset' => 0];
+					$p['offset'] = ($p['page'] - 1) * $p['rpp'];
+					$q .= ' LIMIT ' . $p['offset'] . ', ' . ($p['rpp'] + 1);
+				}
+				else // LIMIT already exists
+				{
+					throw new \Exception('Failed to apply pagination to query'
+						. ', LIMIT clause already exists in query');
+				}
+			}
+
 			if($is_return_qs)
 			{
 				return $q;
 			}
 			else
 			{
-				return Pdo::connection($id)->query($q, $params);
+				if(!$is_pagination)
+				{
+					Pdo::connection($id)->query($q, $params);
+				}
+				else
+				{
+					$r = Pdo::connection($id)->query($q, $params);
+
+					if(count($r) > $p['rpp'])
+					{
+						array_pop($r); // pop last row (more rows)
+						$p['next'] = $p['page'] + 1;
+					}
+
+					if($p['page'] > 1)
+					{
+						$p['prev'] = $p['page'] - 1;
+					}
+
+					return ['pagination' => Pdo::connection($id)->conf('objects')
+						? (object)$p : $p, 'rows' => &$r];
+				}
 			}
 		}
 		else // parse command
@@ -337,6 +381,25 @@ function pdom($cmd, $_ = null)
 
 				case 'optimize': // optimize table
 					return Pdo::connection($id)->query('OPTIMIZE TABLE ' . $table);
+					break;
+
+				case 'pagination': // pagination params getter/setter
+					if(isset($args[0]) && is_array($args[0])) // setter
+					{
+						foreach($args[0] as $k => $v)
+						{
+							if(isset($pagination[$k]))
+							{
+								$v = (int)$v;
+								if($v > 0)
+								{
+									$pagination[$k] = $v;
+								}
+							}
+						}
+					}
+
+					return $pagination;
 					break;
 
 				case 'query': // manual query
