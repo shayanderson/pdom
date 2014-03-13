@@ -263,10 +263,7 @@ print_r( pdom(null) ); // returns array with debug info
 
 ### Query Options
 Query options are used like: *table:command/[option]* and can be used with SELECT commands and these commands:
-*add/insert*
-*call*
-*del/delete*
-*mod/update*
+*add/insert*, *call*, *del/delete*, *mod/update*
 
 Example of option use:
 ```php
