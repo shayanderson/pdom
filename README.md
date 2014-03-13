@@ -313,7 +313,7 @@ $r2 = pdom('[2]users.2'); // SELECT * FROM users WHERE id = '2'
 Pagination is easy to use for large select queries, here is an example:
 ```php
 // set current page number, for this example use GET parameter 'pg'
-$pg = isset($_GET['pg']) ? $_GET['pg'] : 1;
+$pg = isset($_GET['pg']) ? (int)$_GET['pg'] : 1;
 
 // next set 10 Records Per Page (rpp) and current page number
 pdom(':pagination', ['rpp' => 10, 'page' => $pg]);
