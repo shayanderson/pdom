@@ -54,12 +54,12 @@ function pdom($cmd, $_ = null)
 	{
 		$debug = [];
 
-		for($i = 1; $i <= Pdo::connectionId(); $i++)
+		foreach(Pdo::connection(null) as $k)
 		{
-			$debug[$i] = [
-				'conf' => Pdo::connection($i)->conf(null),
-				'keys' => Pdo::connection($i)->key(null),
-				'log' => Pdo::connection($i)->log()
+			$debug[$k] = [
+				'conf' => Pdo::connection($k)->conf(null),
+				'keys' => Pdo::connection($k)->key(null),
+				'log' => Pdo::connection($k)->log()
 			];
 		}
 

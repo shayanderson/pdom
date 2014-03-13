@@ -202,13 +202,19 @@ class Pdo
 	 * @staticvar boolean $is_init
 	 * @staticvar array $connections
 	 * @param int $connection
-	 * @return \self
+	 * @return \self (or array|boolean)
 	 * @throws \Exception
 	 */
 	public static function &connection($connection = 1)
 	{
 		static $is_init = false;
 		static $connections = [];
+
+		if(is_null($connection)) // connection keys getter
+		{
+			$keys = array_keys($connections);
+			return $keys;
+		}
 
 		if(!$is_init) // init handler
 		{
@@ -221,9 +227,27 @@ class Pdo
 			if(isset($connection['host']) && isset($connection['database'])
 				&& isset($connection['user']) && isset($connection['password'])) // verify valid connection
 			{
-				$id = ++self::$__connection_id;
+				if(isset($connection['id']) && is_int($connection['id'])) // manual connection ID
+				{
+					$id = $connection['id'];
 
-				$connections[$id] = new self(self::$__connection_id, $connection['host'],
+					if(isset($connections[$id]))
+					{
+						throw new \Exception('Connection ID "' . $id . '" already exists');
+						return false;
+					}
+				}
+				else // auto ID
+				{
+					$id = ++self::$__connection_id;
+
+					while(isset($connections[$id])) // enforce unique ID
+					{
+						$id = self::$__connection_id++;
+					}
+				}
+
+				$connections[$id] = new self($id, $connection['host'],
 					$connection['database'], $connection['user'], $connection['password'], $connection);
 
 				return $id;
@@ -238,16 +262,6 @@ class Pdo
 
 			throw new \Exception('Connection "' . $connection . '" does not exist');
 		}
-	}
-
-	/**
-	 * Current connection ID getter
-	 *
-	 * @return int
-	 */
-	public static function connectionId() // get current ID
-	{
-		return self::$__connection_id;
 	}
 
 	/**

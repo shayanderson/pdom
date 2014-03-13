@@ -293,6 +293,12 @@ pdom(['host' => 'host1.server.com',
 pdom(['host' => 'host2.server.com', 
 	// more here
 ]);
+
+// or manually set connection ID
+pdom(['host' => 'host5.server.com', 
+	// more here
+	'id' => 5 // manually set ID
+]);
 ```
 Now to use different connections:
 ```php
