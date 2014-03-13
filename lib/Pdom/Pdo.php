@@ -243,7 +243,7 @@ class Pdo
 
 					while(isset($connections[$id])) // enforce unique ID
 					{
-						$id = self::$__connection_id++;
+						$id = ++self::$__connection_id;
 					}
 				}
 
