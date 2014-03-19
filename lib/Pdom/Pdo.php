@@ -159,6 +159,11 @@ class Pdo
 
 		if($this->_conf['errors'])
 		{
+			if($this->_conf['debug'])
+			{
+				print_r($this->log());
+			}
+
 			throw new \Exception('Pdom: ' . $message);
 		}
 	}
