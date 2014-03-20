@@ -8,7 +8,7 @@
  *	- Database table names cannot include character '/'
  * 
  * @package PDOm
- * @version 1.0.b - Mar 19, 2014
+ * @version 1.0.b - Mar 20, 2014
  * @copyright 2014 Shay Anderson <http://www.shayanderson.com>
  * @license MIT License <http://www.opensource.org/licenses/mit-license.php>
  * @link <https://github.com/shayanderson/pdom>
@@ -369,11 +369,11 @@ class Pdo
 			$sh = $this->__pdo->prepare($query);
 			if($sh->execute( is_array($params) ? $params : null ))
 			{
-				if(preg_match('/^(select|show|describe|optimize|pragma|repair)/i', $query)) // fetch
+				if(preg_match('/^\s*(select|show|describe|optimize|pragma|repair)/i', $query)) // fetch
 				{
 					return $sh->fetchAll( $this->conf('objects') ? \PDO::FETCH_CLASS : \PDO::FETCH_ASSOC );
 				}
-				else if(preg_match('/^(delete|insert|update)/i', $query)) // modify
+				else if(preg_match('/^\s*(delete|insert|update)/i', $query)) // modify
 				{
 					return $sh->rowCount();
 				}
