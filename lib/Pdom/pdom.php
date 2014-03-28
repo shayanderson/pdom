@@ -8,7 +8,7 @@
  *	- Database table names cannot include character '/'
  * 
  * @package PDOm
- * @version 1.0.b - Mar 20, 2014
+ * @version 1.0.b - Mar 28, 2014
  * @copyright 2014 Shay Anderson <http://www.shayanderson.com>
  * @license MIT License <http://www.opensource.org/licenses/mit-license.php>
  * @link <https://github.com/shayanderson/pdom>
@@ -348,17 +348,25 @@ function pdom($cmd, $_ = null)
 				case 'mod': // update
 				case 'update':
 					$values = [];
-					foreach($args[0] as $k => $v)
+					if(is_array($args[0]) || is_object($args[0]))
 					{
-						if(is_array($v)) // plain SQL
+						foreach($args[0] as $k => $v)
 						{
-							$values[] = $k . ' = ' . $v[0];
+							if(is_array($v)) // plain SQL
+							{
+								$values[] = $k . ' = ' . $v[0];
+							}
+							else // named param
+							{
+								$params[$k] = $v;
+								$values[] = $k . ' = :' . $k;
+							}
 						}
-						else // named param
-						{
-							$params[$k] = $v;
-							$values[] = $k . ' = :' . $k;
-						}
+					}
+					else
+					{
+						throw new \Exception('Update failed: using scalar value for'
+							. ' setting columns and values (use array or object)');
 					}
 
 					if(isset($args[2]) && is_array($args[2])) // statement params
