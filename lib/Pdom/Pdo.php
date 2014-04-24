@@ -8,7 +8,7 @@
  *	- Database table names cannot include character '/'
  * 
  * @package PDOm
- * @version 1.0.b - Mar 28, 2014
+ * @version 1.1.b - Apr 24, 2014
  * @copyright 2014 Shay Anderson <http://www.shayanderson.com>
  * @license MIT License <http://www.opensource.org/licenses/mit-license.php>
  * @link <https://github.com/shayanderson/pdom>
@@ -26,6 +26,17 @@ class Pdo
 	 * Default primary key column name
 	 */
 	const DEFAULT_PRIMARY_KEY_COLUMN = 'id';
+
+	/**
+	 * Configuration settings
+	 *
+	 * @var array
+	 */
+	private $__conf = [
+		'debug' => false,
+		'errors' => true,
+		'objects' => true
+	];
 
 	/**
 	 * Current connection ID
@@ -49,6 +60,13 @@ class Pdo
 	private $__is_error = false;
 
 	/**
+	 * Primary key column name to table map
+	 *
+	 * @var array
+	 */
+	private $__key_map;
+
+	/**
 	 * Last error string (when error occurs)
 	 *
 	 * @var string
@@ -56,29 +74,11 @@ class Pdo
 	private $__last_error;
 
 	/**
-	 * Configuration settings
-	 *
-	 * @var array
-	 */
-	protected $_conf = [
-		'debug' => false,
-		'errors' => true,
-		'objects' => true
-	];
-
-	/**
 	 * Debug log
 	 *
 	 * @var array
 	 */
-	protected $_log = [];
-
-	/**
-	 * Primary key column name to table map
-	 *
-	 * @var array
-	 */
-	protected $_key_map;
+	private $__log = [];
 
 	/**
 	 * PDO object instance
@@ -103,31 +103,14 @@ class Pdo
 
 		foreach($conf as $k => $v) // conf setter
 		{
-			if(isset($this->_conf[$k]) || array_key_exists($k, $this->_conf))
+			if(isset($this->__conf[$k]) || array_key_exists($k, $this->__conf))
 			{
-				$this->_conf[$k] = $v;
+				$this->__conf[$k] = $v;
 			}
 		}
 
-		try
-		{
-			$this->__pdo = new \PDO('mysql:host=' . $host . ';dbname=' . $database, $user, $password);
-			$this->__pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-			$this->_log('Connection "' . $this->__id . '" registered (host: "' . $host
-				. '", database: "' . $database . '")');
-		}
-		catch(PDOException $e)
-		{
-			$this->_error($e->getMessage());
-		}
-	}
-
-	/**
-	 * Close PDO object connection
-	 */
-	public function __destruct()
-	{
-		$this->__pdo = null;
+		$this->__getPdoObject($id, ['host' => $host, 'database' => $database,
+			'user' => $user, 'password' => $password]);
 	}
 
 	/**
@@ -150,16 +133,16 @@ class Pdo
 	 * @return void
 	 * @throws \Exception
 	 */
-	protected function _error($message)
+	private function __error($message)
 	{
 		$message = 'Error: ' . $message;
 		$this->__is_error = true;
 		$this->__last_error = $message;
-		$this->_log($message);
+		$this->__log($message);
 
-		if($this->_conf['errors'])
+		if($this->__conf['errors'])
 		{
-			if($this->_conf['debug'])
+			if($this->__conf['debug'])
 			{
 				print_r($this->log());
 			}
@@ -169,16 +152,54 @@ class Pdo
 	}
 
 	/**
+	 * PDO object getter (lazy loading) and host data setter
+	 *
+	 * @staticvar array $host
+	 * @param int|null $id
+	 * @param array $host_data
+	 * @return \PDO (or null on host data setter)
+	 */
+	private function &__getPdoObject($id = null, array $host_data = [])
+	{
+		static $host = [];
+
+		if(!empty($host_data))
+		{
+			$host[$id] = $host_data;
+
+			$this->__log('Connection "' . $this->__id . '" registered (host: "'
+				. $host[$this->__id]['host'] . '", database: "'
+				. $host[$this->__id]['database'] . '")');
+		}
+		else if(empty($this->__pdo))
+		{
+			try
+			{
+				$this->__pdo = new \PDO('mysql:host=' . $host[$this->__id]['host'] . ';dbname='
+					. $host[$this->__id]['database'], $host[$this->__id]['user'],
+					$host[$this->__id]['password']);
+				$this->__pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+			}
+			catch(PDOException $e)
+			{
+				$this->__error($e->getMessage());
+			}
+		}
+
+		return $this->__pdo;
+	}
+
+	/**
 	 * Add debug log message
 	 *
 	 * @param string $message
 	 * @return void
 	 */
-	protected function _log($message)
+	private function __log($message)
 	{
-		if($this->_conf['debug'])
+		if($this->__conf['debug'])
 		{
-			$this->_log[] = $message;
+			$this->__log[] = $message;
 		}
 	}
 
@@ -192,12 +213,12 @@ class Pdo
 	{
 		if(is_null($key)) // get all
 		{
-			return $this->_conf;
+			return $this->__conf;
 		}
 
-		if(isset($this->_conf[$key]) || array_key_exists($key, $this->_conf)) // getter
+		if(isset($this->__conf[$key]) || array_key_exists($key, $this->__conf)) // getter
 		{
-			return $this->_conf[$key];
+			return $this->__conf[$key];
 		}
 	}
 
@@ -230,7 +251,7 @@ class Pdo
 		if(is_array($connection)) // register
 		{
 			if(isset($connection['host']) && isset($connection['database'])
-				&& isset($connection['user']) && isset($connection['password'])) // verify valid connection
+				&& isset($connection['user']) && isset($connection['password'])) // verify connection
 			{
 				if(isset($connection['id']) && is_int($connection['id'])) // manual connection ID
 				{
@@ -276,7 +297,7 @@ class Pdo
 	 */
 	public function insertId()
 	{
-		return $this->__pdo->lastInsertId();
+		return $this->__getPdoObject()->lastInsertId();
 	}
 
 	/**
@@ -300,18 +321,18 @@ class Pdo
 	{
 		if(is_null($table)) // get all
 		{
-			return $this->_key_map;
+			return $this->__key_map;
 		}
 
 		if(!is_null($key_column)) // setter
 		{
-			$this->_key_map[$table] = $key_column;
+			$this->__key_map[$table] = $key_column;
 			return $key_column;
 		}
 
-		if(isset($this->_key_map[$table]))
+		if(isset($this->__key_map[$table]))
 		{
-			return $this->_key_map[$table];
+			return $this->__key_map[$table];
 		}
 
 		return self::DEFAULT_PRIMARY_KEY_COLUMN; // default
@@ -334,7 +355,7 @@ class Pdo
 	 */
 	public function log()
 	{
-		return $this->_log;
+		return $this->__log;
 	}
 
 	/**
@@ -346,7 +367,7 @@ class Pdo
 	 */
 	public function query($query, $params = null)
 	{
-		$this->_log('Query: ' . $query);
+		$this->__log('Query: ' . $query);
 		if(is_array($params) && count($params) > 0)
 		{
 			$q_params = [];
@@ -354,19 +375,19 @@ class Pdo
 			{
 				if(is_array($v))
 				{
-					$this->_error('Invalid query parameter(s) type: array (only use scalar values)');
+					$this->__error('Invalid query parameter(s) type: array (only use scalar values)');
 					return false;
 				}
 
 				$q_params[] = $k . ' => ' . $v;
 			}
 
-			$this->_log('(Query params: ' . implode(', ', $q_params) . ')');
+			$this->__log('(Query params: ' . implode(', ', $q_params) . ')');
 		}
 
 		try
 		{
-			$sh = $this->__pdo->prepare($query);
+			$sh = $this->__getPdoObject()->prepare($query);
 			if($sh->execute( is_array($params) ? $params : null ))
 			{
 				if(preg_match('/^\s*(select|show|describe|optimize|pragma|repair)/i', $query)) // fetch
@@ -384,12 +405,12 @@ class Pdo
 			}
 			else
 			{
-				$this->_error($sh->errorInfo());
+				$this->__error($sh->errorInfo());
 			}
 		}
 		catch(\PDOException $e)
 		{
-			$this->_error($e->getMessage());
+			$this->__error($e->getMessage());
 		}
 
 		return false;
@@ -403,6 +424,6 @@ class Pdo
 	 */
 	public function quote($string)
 	{
-		return $this->__pdo->quote($string);
+		return $this->__getPdoObject()->query($string);
 	}
 }
