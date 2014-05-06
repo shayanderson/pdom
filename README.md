@@ -391,7 +391,7 @@ if($user->add()) // do insert
 }
 
 // update example:
-$user = new User(10);
+$user = new User(10); // load user data
 $user->fullname = 'New Name'; // update fullname
 if($user->save()) // do update
 {
