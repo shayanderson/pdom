@@ -12,7 +12,8 @@ Documentation topics:<br />
  &nbsp; &nbsp; **Show:** [Show Tables](https://github.com/shayanderson/pdom#show-tables), [Show Table Columns](https://github.com/shayanderson/pdom#show-table-columns)<br />
  &nbsp; &nbsp; **Table:** [Truncate Table](https://github.com/shayanderson/pdom#truncate-table), [Optimize Table](https://github.com/shayanderson/pdom#optimize-table), [Repair Table](https://github.com/shayanderson/pdom#repair-table)<br />
  &nbsp; &nbsp; **Debugging:** [Debug Log](https://github.com/shayanderson/pdom#debug-log), [Error Checking](https://github.com/shayanderson/pdom#error-checking), [Get Last Error](https://github.com/shayanderson/pdom#get-last-error), [Debugging](https://github.com/shayanderson/pdom#debugging)<br />
- &nbsp; &nbsp; **Advanced:** [Custom Table Primary Key Column Name](https://github.com/shayanderson/pdom#custom-table-primary-key-column-name), [Query Options](https://github.com/shayanderson/pdom#query-options), [Multiple Database Connections](https://github.com/shayanderson/pdom#multiple-database-connections), [Pagination](https://github.com/shayanderson/pdom#pagination)<br />
+ &nbsp; &nbsp; **Advanced:** [Custom Table Primary Key Column Name](https://github.com/shayanderson/pdom#custom-table-primary-key-column-name), [Query Options](https://github.com/shayanderson/pdom#query-options),<br />
+ &nbsp; &nbsp;  &nbsp; &nbsp; [Multiple Database Connections](https://github.com/shayanderson/pdom#multiple-database-connections), [Pagination](https://github.com/shayanderson/pdom#pagination)<br />
 
 ## Quick Start
 Edit the *pdom.bootstrap.php* file and add your database connection params:
