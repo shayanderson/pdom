@@ -3,10 +3,10 @@ PDOm - PDO Wrapper with MySQL Helper
 
 Documentation topics:
 
-	[Quick Start](https://github.com/shayanderson/pdom#quick-start)
+[Quick Start](https://github.com/shayanderson/pdom#quick-start)
 
-	[Select](https://github.com/shayanderson/pdom#select), [Select Where](https://github.com/shayanderson/pdom#select-where), [Select with Key](https://github.com/shayanderson/pdom#select-with-key), [Select Distinct](https://github.com/shayanderson/pdom#select-distinct)
-	[Insert](https://github.com/shayanderson/pdom#insert), [Insert with Insert ID](https://github.com/shayanderson/pdom#insert-with-insert-id), [Insert Ignore](https://github.com/shayanderson/pdom#insert-ignore), [Inserting Objects](https://github.com/shayanderson/pdom#inserting-objects)
+[Select](https://github.com/shayanderson/pdom#select), [Select Where](https://github.com/shayanderson/pdom#select-where), [Select with Key](https://github.com/shayanderson/pdom#select-with-key), [Select Distinct](https://github.com/shayanderson/pdom#select-distinct)
+[Insert](https://github.com/shayanderson/pdom#insert), [Insert with Insert ID](https://github.com/shayanderson/pdom#insert-with-insert-id), [Insert Ignore](https://github.com/shayanderson/pdom#insert-ignore), [Inserting Objects](https://github.com/shayanderson/pdom#inserting-objects)
 
 ## Quick Start
 Edit the *pdom.bootstrap.php* file and add your database connection params:
