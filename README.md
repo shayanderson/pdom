@@ -347,7 +347,7 @@ $r = pdom('users(id, fullname)/distinct/pagination', 'WHERE LENGTH(fullname) > ?
 ```
 
 ### Record Class
-The \Pdom\Record class can be used to simplify record transactions, here are examples:
+The \Pdom\Record class can be used to simplify record actions, here are examples:
 ```php
 // make sure to include \Pdom\Record class file in bootstrap
 
@@ -370,6 +370,7 @@ class User extends \Pdom\Record
 // set User object
 $user = new User;
 
+// select example:
 // load data for user with ID '10'
 $user->user_id = 10;
 $user->select();
@@ -389,7 +390,7 @@ if($user->add()) // do insert
 	echo 'User added';
 }
 
-// update example
+// update example:
 $user = new User(10);
 $user->fullname = 'New Name'; // update fullname
 if($user->save()) // do update
@@ -397,7 +398,7 @@ if($user->save()) // do update
 	echo 'User updated';
 }
 
-// delete example
+// delete example:
 $user = new User;
 $user->user_id = 10; // do not pre-load data
 if($user->delete()) // do delete
