@@ -1,6 +1,11 @@
 # PDOm
 PDOm - PDO Wrapper with MySQL Helper
 
+Documentation topics:
+	[Quick Start](https://github.com/shayanderson/pdom#quick-start)
+	[Select](https://github.com/shayanderson/pdom#select), [Select Where](https://github.com/shayanderson/pdom#select-where), [Select with Key](https://github.com/shayanderson/pdom#select-with-key), [Select Distinct](https://github.com/shayanderson/pdom#select-distinct)
+	[Insert](https://github.com/shayanderson/pdom#insert), [Insert with Insert ID](https://github.com/shayanderson/pdom#insert-with-insert-id), [Insert Ignore](https://github.com/shayanderson/pdom#insert-ignore), [Inserting Objects](https://github.com/shayanderson/pdom#inserting-objects)
+
 ## Quick Start
 Edit the *pdom.bootstrap.php* file and add your database connection params:
 ```php
@@ -285,17 +290,17 @@ $affected_rows = pdom('users:mod/low_priority/ignore', ['fullname' => 'Shay Ande
 Using multiple database connections is easy, register database connections in bootstrap:
 ```php
 // connection 1 (default connection)
-pdom(['host' => 'host1.server.com', 
+pdom(['host' => 'host1.server.com',
 	// more here
 ]);
 
 // connection 2
-pdom(['host' => 'host2.server.com', 
+pdom(['host' => 'host2.server.com',
 	// more here
 ]);
 
 // or manually set connection ID
-pdom(['host' => 'host5.server.com', 
+pdom(['host' => 'host5.server.com',
 	// more here
 	'id' => 5 // manually set ID
 ]);
