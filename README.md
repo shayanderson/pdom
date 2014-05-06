@@ -7,7 +7,7 @@ Documentation topics:<br />
  &nbsp; &nbsp; **[Insert](https://github.com/shayanderson/pdom#insert)**, [Insert with Insert ID](https://github.com/shayanderson/pdom#insert-with-insert-id), [Insert Ignore](https://github.com/shayanderson/pdom#insert-ignore), [Inserting Objects](https://github.com/shayanderson/pdom#inserting-objects)<br />
  &nbsp; &nbsp; **[Update](https://github.com/shayanderson/pdom#update)**, [Update Ignore](https://github.com/shayanderson/pdom#update-ignore)<br />
  &nbsp; &nbsp; **[Delete](https://github.com/shayanderson/pdom#delete)**, [Delete Ignore](https://github.com/shayanderson/pdom#delete-ignore)<br />
- &nbsp; &nbsp; **[Call Stored Procedure/Function (Routines)](https://github.com/shayanderson/pdom#call-stored-procedurefunction-routines)**<br />
+ &nbsp; &nbsp; [**Call** Stored Procedure/Function (Routines)](https://github.com/shayanderson/pdom#call-stored-procedurefunction-routines)<br />
  &nbsp; &nbsp; **[Custom Table Primary Key Column Name](https://github.com/shayanderson/pdom#custom-table-primary-key-column-name)**<br />
  &nbsp; &nbsp; **Query:** [Execute Query](https://github.com/shayanderson/pdom#execute-query), [Count Query](https://github.com/shayanderson/pdom#count-query)<br />
  &nbsp; &nbsp; **Show:** [Show Tables](https://github.com/shayanderson/pdom#show-tables), [Show Table Columns](https://github.com/shayanderson/pdom#show-table-columns)<br />
