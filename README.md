@@ -3,8 +3,17 @@ PDOm - PDO Wrapper with MySQL Helper
 
 Documentation topics:<br />
  &nbsp; &nbsp; **[Quick Start](https://github.com/shayanderson/pdom#quick-start)**<br />
- &nbsp; &nbsp; **[Select]**(https://github.com/shayanderson/pdom#select), [Select Where](https://github.com/shayanderson/pdom#select-where), [Select with Key](https://github.com/shayanderson/pdom#select-with-key), [Select Distinct](https://github.com/shayanderson/pdom#select-distinct)<br />
- &nbsp; &nbsp; **[Insert]**(https://github.com/shayanderson/pdom#insert), [Insert with Insert ID](https://github.com/shayanderson/pdom#insert-with-insert-id), [Insert Ignore](https://github.com/shayanderson/pdom#insert-ignore), [Inserting Objects](https://github.com/shayanderson/pdom#inserting-objects)<br />
+ &nbsp; &nbsp; **[Select](https://github.com/shayanderson/pdom#select)**, [Select Where](https://github.com/shayanderson/pdom#select-where), [Select with Key](https://github.com/shayanderson/pdom#select-with-key), [Select Distinct](https://github.com/shayanderson/pdom#select-distinct)<br />
+ &nbsp; &nbsp; **[Insert](https://github.com/shayanderson/pdom#insert)**, [Insert with Insert ID](https://github.com/shayanderson/pdom#insert-with-insert-id), [Insert Ignore](https://github.com/shayanderson/pdom#insert-ignore), [Inserting Objects](https://github.com/shayanderson/pdom#inserting-objects)<br />
+ &nbsp; &nbsp; **[Update](https://github.com/shayanderson/pdom#update)**, [Update Ignore](https://github.com/shayanderson/pdom#update-ignore)<br />
+ &nbsp; &nbsp; **[Delete](https://github.com/shayanderson/pdom#delete)**, [Delete Ignore](https://github.com/shayanderson/pdom#delete-ignore)<br />
+ &nbsp; &nbsp; **[Execute Query](https://github.com/shayanderson/pdom#execute-query)**<br />
+ &nbsp; &nbsp; **[Count Query](https://github.com/shayanderson/pdom#count-query)**<br />
+ &nbsp; &nbsp; **[Call Stored Procedure/Function (Routines)](https://github.com/shayanderson/pdom#call-stored-procedurefunction-routines)**<br />
+ &nbsp; &nbsp; **[Custom Table Primary Key Column Name](https://github.com/shayanderson/pdom#custom-table-primary-key-column-name)**<br />
+ &nbsp; &nbsp; **[Show Tables](https://github.com/shayanderson/pdom#show-tables)**<br />
+ &nbsp; &nbsp; **[Show Table Columns](https://github.com/shayanderson/pdom#show-table-columns)**<br />
+ &nbsp; &nbsp; **[Truncate Table](https://github.com/shayanderson/pdom#truncate-table)**<br />
 
 ## Quick Start
 Edit the *pdom.bootstrap.php* file and add your database connection params:
