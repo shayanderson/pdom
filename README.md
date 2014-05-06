@@ -11,9 +11,8 @@ Documentation topics:<br />
  &nbsp; &nbsp; **[Count Query](https://github.com/shayanderson/pdom#count-query)**<br />
  &nbsp; &nbsp; **[Call Stored Procedure/Function (Routines)](https://github.com/shayanderson/pdom#call-stored-procedurefunction-routines)**<br />
  &nbsp; &nbsp; **[Custom Table Primary Key Column Name](https://github.com/shayanderson/pdom#custom-table-primary-key-column-name)**<br />
- &nbsp; &nbsp; **[Show Tables](https://github.com/shayanderson/pdom#show-tables)**<br />
- &nbsp; &nbsp; **[Show Table Columns](https://github.com/shayanderson/pdom#show-table-columns)**<br />
- &nbsp; &nbsp; **[Truncate Table](https://github.com/shayanderson/pdom#truncate-table)**<br />
+ &nbsp; &nbsp; Show: [Show Tables](https://github.com/shayanderson/pdom#show-tables), [Show Table Columns](https://github.com/shayanderson/pdom#show-table-columns)<br />
+ &nbsp; &nbsp; Table: [Truncate Table](https://github.com/shayanderson/pdom#truncate-table), [Optimize Table](https://github.com/shayanderson/pdom#optimize-table), [Repair Table](https://github.com/shayanderson/pdom#repair-table)<br />
 
 ## Quick Start
 Edit the *pdom.bootstrap.php* file and add your database connection params:
