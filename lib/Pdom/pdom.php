@@ -207,7 +207,7 @@ function pdom($cmd, $_ = null)
 					{
 						if(is_array($v)) // plain SQL
 						{
-							if(strlen($v[0]) > 0)
+							if(isset($v[0]) && strlen($v[0]) > 0)
 							{
 								$values[] = $v[0];
 							}
@@ -244,7 +244,7 @@ function pdom($cmd, $_ = null)
 							$params_str .= $sep . '?';
 							$params[] = $args[$i];
 						}
-						else if(strlen($args[$i]) > 0) // plain SQL
+						else if(isset($args[$i]) && strlen($args[$i]) > 0) // plain SQL
 						{
 							$params_str .= $sep . implode('', $args[$i]);
 						}
@@ -354,7 +354,7 @@ function pdom($cmd, $_ = null)
 						{
 							if(is_array($v)) // plain SQL
 							{
-								if(strlen($v[0]) > 0)
+								if(isset($v[0]) && strlen($v[0]) > 0)
 								{
 									$values[] = $k . ' = ' . $v[0];
 								}
