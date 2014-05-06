@@ -2,9 +2,9 @@
 PDOm - PDO Wrapper with MySQL Helper
 
 Documentation topics:<br />
- &nbsp; &nbsp; [Quick Start](https://github.com/shayanderson/pdom#quick-start)<br />
- &nbsp; &nbsp; [Select](https://github.com/shayanderson/pdom#select), [Select Where](https://github.com/shayanderson/pdom#select-where), [Select with Key](https://github.com/shayanderson/pdom#select-with-key), [Select Distinct](https://github.com/shayanderson/pdom#select-distinct)<br />
- &nbsp; &nbsp; [Insert](https://github.com/shayanderson/pdom#insert), [Insert with Insert ID](https://github.com/shayanderson/pdom#insert-with-insert-id), [Insert Ignore](https://github.com/shayanderson/pdom#insert-ignore), [Inserting Objects](https://github.com/shayanderson/pdom#inserting-objects)<br />
+ &nbsp; &nbsp; **[Quick Start]**(https://github.com/shayanderson/pdom#quick-start)<br />
+ &nbsp; &nbsp; **[Select]**(https://github.com/shayanderson/pdom#select), [Select Where](https://github.com/shayanderson/pdom#select-where), [Select with Key](https://github.com/shayanderson/pdom#select-with-key), [Select Distinct](https://github.com/shayanderson/pdom#select-distinct)<br />
+ &nbsp; &nbsp; **[Insert]**(https://github.com/shayanderson/pdom#insert), [Insert with Insert ID](https://github.com/shayanderson/pdom#insert-with-insert-id), [Insert Ignore](https://github.com/shayanderson/pdom#insert-ignore), [Inserting Objects](https://github.com/shayanderson/pdom#inserting-objects)<br />
 
 ## Quick Start
 Edit the *pdom.bootstrap.php* file and add your database connection params:
