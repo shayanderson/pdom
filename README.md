@@ -34,8 +34,15 @@ require_once './pdom.bootstrap.php';
 
 Now execute SELECT query:
 ```php
-$user = pdom('users.14'); // same as "SELECT * FROM users WHERE id = '14'"
-echo $user[0]->fullname; // print record field value
+try
+{
+	$user = pdom('users.14'); // same as "SELECT * FROM users WHERE id = '14'"
+	echo $user[0]->fullname; // print record field value
+}
+catch(\Exception $ex)
+{
+	// warn here
+}
 ```
 
 ## PDOm Commands
@@ -337,4 +344,71 @@ pdom(':pagination', ['rpp' => 10, 'page' => $pg]);
 $r = pdom('users(id, fullname)/distinct/pagination', 'WHERE LENGTH(fullname) > ?', [0]);
 // $r['pagination'] contains pagination values: rpp, page, next, prev, offset
 // $r['rows'] contains selected rows
+```
+
+### Record Class
+The \Pdom\Record class can be used to simplify record transactions, here are examples:
+```php
+// make sure to include \Pdom\Record class file in bootstrap
+
+// create User class to extend \Pdom\Record class (normally this would be in separate file)
+class User extends \Pdom\Record
+{
+	const KEY = 'user_id'; // define the primary key column name
+	const TABLE = 'users'; // define the table name
+
+	// set table columns (minus primary key column)
+	// the '@column' annotation is used to set class property as column
+	/** @column */
+	public $fullname;
+	/** @column */
+	public $is_active;
+	/** @column */
+	public $ts_created;
+}
+
+// set User object
+$user = new User;
+
+// load data for user with ID '10'
+$user->user_id = 10;
+$user->select();
+// or if User class does not override __construct() method you can simply do:
+// $user = new User(10); // autoloads user data with ID '10'
+
+// do something with loaded data:
+echo $user->fullname;
+
+// insert example:
+$user = new User;
+$user->fullname = 'Shay Anderson';
+$user->is_active = 1;
+$user->ts_created = ['NOW()']; // array tells pdom to use plain SQL
+if($user->add()) // do insert
+{
+	echo 'User added';
+}
+
+// update example
+$user = new User(10);
+$user->fullname = 'New Name'; // update fullname
+if($user->save()) // do update
+{
+	echo 'User updated';
+}
+
+// delete example
+$user = new User;
+$user->user_id = 10; // do not pre-load data
+if($user->delete()) // do delete
+{
+	echo 'User deleted';
+}
+
+// other useful \Pdom\Record methods are:
+$column_names = $user->getColumnNames(); // get array of column names
+$columns_and_values = &$user->getColumns(); // get array of column names (array keys) and values
+$is_column = $user->isColumn('fullname'); // check if column exists
+$is_record = $user->isRecord(); // check if record already exists using primary key column value
+$user->setColumns(['fullname' => 'Some value', 'is_active' => 0]); // populate column values
 ```
