@@ -8,7 +8,7 @@
  *	- Database table names cannot include character '/'
  * 
  * @package PDOm
- * @version 1.1.b - Apr 24, 2014
+ * @version 1.1.b - May 06, 2014
  * @copyright 2014 Shay Anderson <http://www.shayanderson.com>
  * @license MIT License <http://www.opensource.org/licenses/mit-license.php>
  * @link <https://github.com/shayanderson/pdom>
@@ -207,7 +207,10 @@ function pdom($cmd, $_ = null)
 					{
 						if(is_array($v)) // plain SQL
 						{
-							$values[] = $v[0];
+							if(strlen($v[0]) > 0)
+							{
+								$values[] = $v[0];
+							}
 						}
 						else // named param
 						{
@@ -241,7 +244,7 @@ function pdom($cmd, $_ = null)
 							$params_str .= $sep . '?';
 							$params[] = $args[$i];
 						}
-						else // plain SQL
+						else if(strlen($args[$i]) > 0) // plain SQL
 						{
 							$params_str .= $sep . implode('', $args[$i]);
 						}
@@ -280,13 +283,10 @@ function pdom($cmd, $_ = null)
 
 					if(isset($r[0]))
 					{
-						if(is_array($r[0]) && isset($r[0]['count']))
+						$r[0] = (array)$r[0];
+						if(isset($r[0]['count']))
 						{
 							return (int)$r[0]['count'];
-						}
-						else if(is_object($r[0]) && isset($r[0]->count))
-						{
-							return (int)$r[0]->count;
 						}
 					}
 
@@ -354,7 +354,10 @@ function pdom($cmd, $_ = null)
 						{
 							if(is_array($v)) // plain SQL
 							{
-								$values[] = $k . ' = ' . $v[0];
+								if(strlen($v[0]) > 0)
+								{
+									$values[] = $k . ' = ' . $v[0];
+								}
 							}
 							else // named param
 							{
