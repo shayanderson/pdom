@@ -60,12 +60,14 @@ $r = pdom('users', 'LIMIT 1'); // SELECT * FROM users LIMIT 1
 Select query with named parameters:
 ```php
 // SELECT fullname, email FROM users WHERE is_active = '1' AND fullname = 'Shay Anderson'
-$r = pdom('users(fullname, email)', 'WHERE is_active = :active AND fullname = :name LIMIT 2', ['active' => 1, 'name' => 'Shay Anderson']);
+$r = pdom('users(fullname, email)', 'WHERE is_active = :active AND fullname = :name LIMIT 2', 
+	['active' => 1, 'name' => 'Shay Anderson']);
 ```
 Select query with question mark parameters:
 ```php
 // SELECT fullname, email FROM users WHERE is_active = 1 AND fullname = 'Shay Anderson' LIMIT 2
-$r = pdom('users(fullname, email)', 'WHERE is_active = ? AND fullname = ? LIMIT 2', [1, 'Shay Anderson']);
+$r = pdom('users(fullname, email)', 'WHERE is_active = ? AND fullname = ? LIMIT 2', 
+	[1, 'Shay Anderson']);
 ```
 
 ### Select with Key
