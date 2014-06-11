@@ -90,7 +90,8 @@ $r = pdom('users(fullname)/distinct'); // SELECT DISTINCT fullname FROM users
 Simple insert example:
 ```php
 // INSERT INTO users (fullname, is_active, created) VALUES('Name Here', '1', NOW())
-$affected_rows = pdom('users:add', ['fullname' => 'Name Here', 'is_active' => 1, 'created' => ['NOW()']]);
+$affected_rows = pdom('users:add', ['fullname' => 'Name Here', 'is_active' => 1,
+	'created' => ['NOW()']]);
 
 // can also use action ':insert'
 // pdom('users:insert', ...);
@@ -131,7 +132,8 @@ $affected_rows = pdom('users:add', new User);
 Simple update query example:
 ```php
 // UPDATE users SET fullname = 'Shay Anderson' WHERE user_id = '2'
-$affected_rows = pdom('users:mod', ['fullname' => 'Shay Anderson'], 'WHERE user_id = :user_id', ['user_id' => 2]);
+$affected_rows = pdom('users:mod', ['fullname' => 'Shay Anderson'], 'WHERE user_id = :user_id',
+	['user_id' => 2]);
 
 // can also use action ':update'
 // pdom('users:update', ...);
@@ -301,7 +303,8 @@ $r = pdom('users(fullname)/distinct/query'); // returns string 'SELECT DISTINCT 
 Options can be chained together to complete valid MySQL statements:
 ```php
 // UPDATE LOW_PRIORITY IGNORE users SET fullname = 'Shay Anderson' WHERE user_id = '2'
-$affected_rows = pdom('users:mod/low_priority/ignore', ['fullname' => 'Shay Anderson'], 'WHERE user_id = :user_id', ['user_id' => 2]);
+$affected_rows = pdom('users:mod/low_priority/ignore', ['fullname' => 'Shay Anderson'],	
+	'WHERE user_id = :user_id', ['user_id' => 2]);
 ```
 
 ### Multiple Database Connections
