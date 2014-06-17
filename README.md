@@ -237,7 +237,7 @@ try
 	pdom('users:add', ['fullname' => 'Name 2']);
 	if(pdom(':commit')) ... // no problem, commit + continue with logic
 }
-(catch \Exception $ex)
+catch(\Exception $ex)
 {
 	pdom(':rollback'); // problem(s), rollback
 	// warn client
