@@ -25,7 +25,7 @@ pdom([
 	'database' => 'test',
 	'user' => 'myuser',
 	'password' => 'mypass',
-	'errors' => true, // true: throw Exceptions, false: no Exceptions, use error methods to get errors
+	'errors' => true, // true: throw Exceptions, false: no Exceptions, use error methods
 	'debug' => true // turn logging on/off
 ```
 
