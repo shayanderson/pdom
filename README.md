@@ -209,6 +209,39 @@ pdom('users:call', 'sp_addUserGetId', 'Name Here', 1, ['NOW()'], ['@out']);
 $r = pdom(':query', 'SELECT @out;');
 ```
 
+### Transactions
+Transactions are easy, for example:
+```php
+pdom(':transaction'); // start transaction (autocommit off)
+pdom('users:add', ['fullname' => 'Name 1']);
+pdom('users:add', ['fullname' => 'Name 2']);
+
+if(!pdom('error')) // no error
+{
+	pdom(':commit'); // no problem, commit
+}
+else // error
+{
+	pdom(':rollback'); // problem(s), rollback
+	// warn client
+}
+```
+> When errors are on, use *try/catch* block like:
+```php
+try
+{
+	pdom(':transaction'); // start transaction (autocommit off)
+	pdom('users:add', ['fullname' => 'Name 1']);
+	pdom('users:add', ['fullname' => 'Name 2']);
+	pdom(':commit'); // no problem, commit
+}
+catch
+{
+	pdom(':rollback'); // problem(s), rollback
+	// warn client
+}
+```
+
 ### Custom Table Primary Key Column Name
 By default the primary key column named used when selecting with key is 'id'.
  This can be changed using the 'key' or 'keys' command:
