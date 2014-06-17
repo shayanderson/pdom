@@ -218,7 +218,7 @@ pdom('users:add', ['fullname' => 'Name 2']);
 
 if(!pdom('error')) // no error
 {
-	pdom(':commit'); // no problem, commit
+	if(pdom(':commit')) ... // no problem, commit + continue with logic
 }
 else // error
 {
@@ -233,7 +233,7 @@ try
 	pdom(':transaction'); // start transaction (autocommit off)
 	pdom('users:add', ['fullname' => 'Name 1']);
 	pdom('users:add', ['fullname' => 'Name 2']);
-	pdom(':commit'); // no problem, commit
+	if(pdom(':commit')) ... // no problem, commit + continue with logic
 }
 catch
 {
