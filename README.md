@@ -25,6 +25,8 @@ pdom([
 	'database' => 'test',
 	'user' => 'myuser',
 	'password' => 'mypass',
+	'errors' => true, // true: throw Exceptions, false: no Exceptions, use error methods to get errors
+	'debug' => true // turn logging on/off
 ```
 
 Next, include the bootstrap file in your project file:
@@ -226,7 +228,7 @@ else // error
 	// warn client
 }
 ```
-> When errors are on, use *try/catch* block like:
+> When [errors are on](https://github.com/shayanderson/pdom#quick-start), use *try/catch* block like:
 ```php
 try
 {
