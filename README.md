@@ -22,7 +22,7 @@ Here is a list of PDOm commands:
 - [`transaction`](https://github.com/shayanderson/pdom#transactions) - start transaction
 
 ## Quick Start
-Edit the *pdom.bootstrap.php* file and add your database connection params:
+Edit the `pdom.bootstrap.php` file and add your database connection params:
 ```php
 // register database connection
 pdom([
@@ -337,15 +337,15 @@ print_r( pdom(null) ); // returns array with debug info
 ```
 
 #### Query Options
-Query options are used like: *table:command/[option]* and can be used with SELECT commands and these commands:
-*add/insert*, *call*, *del/delete*, *mod/update*
+Query options are used like: `table:command/[option]` and can be used with `SELECT` commands and these commands:
+`add/insert`, `call`, `del/delete`, `mod/update`
 
 Example of option use:
 ```php
 $r = pdom('users(fullname)/distinct'); // DISTINCT option
 ```
 
-The *query* option can be used to return the query string only, without executing the query (for debugging), for example:
+The `query` option can be used to return the query string only, without executing the query (for debugging), for example:
 ```php
 $r = pdom('users(fullname)/distinct/query'); // returns string 'SELECT DISTINCT fullname FROM users'
 ```
