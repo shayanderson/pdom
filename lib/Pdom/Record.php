@@ -5,7 +5,7 @@
  * Requirements:
  *	- PHP 5.4+
  *	- PHP PDO database extension <http://www.php.net/manual/en/book.pdo.php>
- *	- Database table names cannot include characters '.', '/' or ' ' (whitespace)
+ *	- Database table names cannot include characters '.', '/', ':' or ' ' (whitespace)
  * 
  * @package PDOm
  * @version 1.4.b
