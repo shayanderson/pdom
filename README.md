@@ -201,16 +201,16 @@ $count = pdom('users:count WHERE user_id > ? AND is_active = ?', [2, 1]);
 ### Call Stored Procedure/Function (Routines)
 Call SP/SF example:
 ```php
-pdom('users:call sp_name'); // CALL sp_name()
+pdom(':call sp_name'); // CALL sp_name()
 
 // Call SP/SF with params:
 // CALL sp_addUser('Name Here', '1', NOW())
-pdom('users:call sp_addUser', 'Name Here', 1, ['NOW()']);
+pdom(':call sp_addUser', 'Name Here', 1, ['NOW()']);
 
 // Call SP/SF with params and out param
 pdom(':query SET @out = "";'); // set out param
 // CALL sp_addUser('Name Here', '1', NOW(), @out)
-pdom('users:call sp_addUserGetId', 'Name Here', 1, ['NOW()'], ['@out']);
+pdom(':call sp_addUserGetId', 'Name Here', 1, ['NOW()'], ['@out']);
 // get out param value
 $r = pdom(':query SELECT @out;');
 ```
