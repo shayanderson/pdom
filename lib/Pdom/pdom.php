@@ -42,6 +42,7 @@ use Pdom\Pdo;
  *		optimize	(optimize table)
  *		query		(execute manual query)
  *		repair		(repair table)
+ *		replace		(replace record)
  *		rollback	(rollback transaction)
  *		tables		(show database tables)
  *		transaction	(start transaction)
@@ -427,6 +428,49 @@ function pdom($cmd, $_ = null)
 
 				case 'repair': // repair table
 					return Pdo::connection($id)->query('REPAIR TABLE ' . $table);
+					break;
+
+				case 'replace':
+					if(is_object($args[0])) // object
+					{
+						$obj_arr = [];
+						foreach(get_object_vars($args[0]) as $k => $v)
+						{
+							$obj_arr[$k] = $v;
+						}
+
+						$args[0] = &$obj_arr;
+					}
+
+					$values = [];
+					foreach($args[0] as $k => $v)
+					{
+						if(is_array($v)) // plain SQL
+						{
+							if(isset($v[0]) && strlen($v[0]) > 0)
+							{
+								$values[] = $v[0];
+							}
+						}
+						else // named param
+						{
+							$params[$k] = $v;
+							$values[] = ':' . $k;
+						}
+					}
+
+					$q = 'REPLACE' . $option . ' INTO ' . $table . '('
+						. implode(', ', array_keys($args[0])) . ') VALUES('
+						. implode(', ', $values) . ')';
+
+					if($is_return_qs)
+					{
+						return $q;
+					}
+					else
+					{
+						return Pdo::connection($id)->query($q, $params);
+					}
 					break;
 
 				case 'rollback': // rollback transaction
