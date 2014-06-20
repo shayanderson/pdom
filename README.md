@@ -79,7 +79,7 @@ $r = pdom('users.2'); // SELECT * FROM users WHERE id = '2'
 
 // using plain SQL in query example
 // SELECT fullname, is_active FROM users WHERE id = '2' AND fullname = 'Shay'
-$r = pdom('users(fullname, is_active).2 WHERE fullname = :name LIMIT 1', ['name' = > 'Shay']);
+$r = pdom('users(fullname, is_active).2 WHERE fullname = :name LIMIT 1', ['name' = > 'Name Here']);
 ```
 >**Note:** when selecting with key use integer values only, for example:
 ```php
@@ -138,7 +138,7 @@ $affected_rows = pdom('users:add', new User);
 Simple update query example:
 ```php
 // UPDATE users SET fullname = 'Shay Anderson' WHERE user_id = '2'
-$affected_rows = pdom('users:mod', ['fullname' => 'Shay Anderson'], 'WHERE user_id = :user_id',
+$affected_rows = pdom('users:mod WHERE user_id = :user_id', ['fullname' => 'Shay Anderson'],
 	['user_id' => 2]);
 
 // can also use action ':update'
@@ -149,7 +149,7 @@ $affected_rows = pdom('users:mod', ['fullname' => 'Shay Anderson'], 'WHERE user_
 Update ignore query example:
 ```php
 // UPDATE IGNORE users SET user_id = '3' WHERE user_id = 6
-$affected_rows = pdom('users:mod/ignore', ['user_id' => 3], 'WHERE user_id = 6');
+$affected_rows = pdom('users:mod/ignore WHERE user_id = 6', ['user_id' => 3]);
 ```
 
 ### Delete
@@ -162,27 +162,27 @@ $affected_rows = pdom('users:del'); // DELETE FROM users
 // pdom('users:delete', ...);
 
 // DELETE FROM users WHERE is_active = 1
-$affected_rows = pdom('users:del', 'WHERE is_active = 1');
+$affected_rows = pdom('users:del WHERE is_active = 1');
 
 // DELETE FROM users WHERE user_id = '29'
-$affected_rows = pdom('users:del', 'WHERE user_id = ?', [29]);
+$affected_rows = pdom('users:del WHERE user_id = ?', [29]);
 ```
 
 ### Delete Ignore
 Delete ignore query example:
 ```php
 // DELETE IGNORE FROM users WHERE user_id = 60
-$affected_rows = pdom('users:del/ignore', 'WHERE user_id = 60');
+$affected_rows = pdom('users:del/ignore WHERE user_id = 60');
 ```
 
 ### Execute Query
 Execute manual query example:
 ```php
 // execute any query using the 'query' command
-$r = pdom(':query', 'SELECT * FROM users LIMIT 2');
+$r = pdom(':query SELECT * FROM users LIMIT 2');
 
 // use params with manual query:
-$r = pdom(':query', 'SELECT * FROM users WHERE user_id = ?', [2]);
+$r = pdom(':query SELECT * FROM users WHERE user_id = ?', [2]);
 ```
 
 ### Count Query
@@ -192,27 +192,27 @@ Get back a count (integer) query example:
 $count = pdom('users:count'); // SELECT COUNT(1) FROM users
 
 // SELECT COUNT(1) FROM users WHERE is_active = 1
-$count = pdom('users:count', 'WHERE is_active = 1');
+$count = pdom('users:count WHERE is_active = 1');
 
 // SELECT COUNT(1) FROM users WHERE user_id > '2' AND is_active = '1'
-$count = pdom('users:count', 'WHERE user_id > ? AND is_active = ?', [2, 1]);
+$count = pdom('users:count WHERE user_id > ? AND is_active = ?', [2, 1]);
 ```
 
 ### Call Stored Procedure/Function (Routines)
 Call SP/SF example:
 ```php
-pdom('users:call', 'sp_name'); // CALL sp_name()
+pdom('users:call sp_name'); // CALL sp_name()
 
 // Call SP/SF with params:
 // CALL sp_addUser('Name Here', '1', NOW())
-pdom('users:call', 'sp_addUser', 'Name Here', 1, ['NOW()']);
+pdom('users:call sp_addUser', 'Name Here', 1, ['NOW()']);
 
 // Call SP/SF with params and out param
-pdom(':query', 'SET @out = "";'); // set out param
+pdom(':query SET @out = "";'); // set out param
 // CALL sp_addUser('Name Here', '1', NOW(), @out)
-pdom('users:call', 'sp_addUserGetId', 'Name Here', 1, ['NOW()'], ['@out']);
+pdom('users:call sp_addUserGetId', 'Name Here', 1, ['NOW()'], ['@out']);
 // get out param value
-$r = pdom(':query', 'SELECT @out;');
+$r = pdom(':query SELECT @out;');
 ```
 
 ### Transactions
@@ -222,7 +222,7 @@ pdom(':transaction'); // start transaction (autocommit off)
 pdom('users:add', ['fullname' => 'Name 1']);
 pdom('users:add', ['fullname' => 'Name 2']);
 
-if(!pdom('error')) // no error
+if(!pdom(':error')) // no error
 {
 	if(pdom(':commit')) ... // no problem, commit + continue with logic
 }
@@ -253,13 +253,13 @@ By default the primary key column named used when selecting with key is 'id'.
  This can be changed using the 'key' or 'keys' command:
 ```php
 // register 'user_id' as primary key column name for table 'users'
-pdom('users:key', 'user_id');
+pdom('users:key user_id');
 
 // now 'WHERE id = 2' becomes 'WHERE user_id = 2'
 $r = pdom('users.2'); // SELECT * FROM users WHERE user_id = '2'
 
-// also can use 'keys' command to register multiple key column names:
-pdom(':keys', [
+// also register multiple key column names:
+pdom(':key', [
 	'users' => 'user_id',
 	'orders' => 'order_id'
 ]);
@@ -342,8 +342,8 @@ $r = pdom('users(fullname)/distinct/query'); // returns string 'SELECT DISTINCT 
 Options can be chained together to complete valid MySQL statements:
 ```php
 // UPDATE LOW_PRIORITY IGNORE users SET fullname = 'Shay Anderson' WHERE user_id = '2'
-$affected_rows = pdom('users:mod/low_priority/ignore', ['fullname' => 'Shay Anderson'],	
-	'WHERE user_id = :user_id', ['user_id' => 2]);
+$affected_rows = pdom('users:mod/low_priority/ignore WHERE user_id = :user_id', ['fullname' => 'Shay Anderson'],
+	['user_id' => 2]);
 ```
 
 ### Multiple Database Connections
@@ -387,7 +387,7 @@ pdom(':pagination', ['rpp' => 10, 'page' => $pg]);
 
 // execute SELECT query with pagination (SELECT query cannot contain LIMIT clause)
 // SELECT DISTINCT id, fullname FROM users WHERE LENGTH(fullname) > '0' LIMIT x, y
-$r = pdom('users(id, fullname)/distinct/pagination', 'WHERE LENGTH(fullname) > ?', [0]);
+$r = pdom('users(id, fullname)/distinct/pagination WHERE LENGTH(fullname) > ?', [0]);
 // $r['pagination'] contains pagination values: rpp, page, next, prev, offset
 // $r['rows'] contains selected rows
 ```
