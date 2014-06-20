@@ -1,5 +1,5 @@
 # PDOm
-PDOm - PDO Wrapper with MySQL Helper
+#### PDOm - PDO Wrapper with MySQL Helper
 
 Here is a list of simple PDOm commands:
 
