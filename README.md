@@ -102,6 +102,12 @@ $affected_rows = pdom('users:add', ['fullname' => 'Name Here', 'is_active' => 1,
 // can also use action ':insert'
 // pdom('users:insert', ...);
 ```
+> The `replace` command can also be used, for example:
+```php
+// INSERT INTO users (user_id, fullname, is_active, created) VALUES(5, 'Name Here', '1', NOW())
+$affected_rows = pdom('users:replace', ['id' => 5 'fullname' => 'Name Here',
+	'is_active' => 1, 'created' => ['NOW()']]);
+```
 
 ### Insert with Insert ID
 Insert query and get insert ID:
