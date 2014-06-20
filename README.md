@@ -10,7 +10,6 @@ Documentation topics:<br />
  &nbsp; &nbsp; [**Call** Stored Procedure/Function (Routines)](https://github.com/shayanderson/pdom#call-stored-procedurefunction-routines)<br />
  &nbsp; &nbsp; **Query:** [Execute Query](https://github.com/shayanderson/pdom#execute-query), [Count Query](https://github.com/shayanderson/pdom#count-query)<br />
  &nbsp; &nbsp; **Show:** [Show Tables](https://github.com/shayanderson/pdom#show-tables), [Show Table Columns](https://github.com/shayanderson/pdom#show-table-columns)<br />
- &nbsp; &nbsp; **Table:** [Truncate Table](https://github.com/shayanderson/pdom#truncate-table), [Optimize Table](https://github.com/shayanderson/pdom#optimize-table), [Repair Table](https://github.com/shayanderson/pdom#repair-table)<br />
  &nbsp; &nbsp; **Debugging:** [Debug Log](https://github.com/shayanderson/pdom#debug-log), [Error Checking](https://github.com/shayanderson/pdom#error-checking), [Get Last Error](https://github.com/shayanderson/pdom#get-last-error), [Debugging](https://github.com/shayanderson/pdom#debugging)<br />
  &nbsp; &nbsp; **Advanced:** [Transactions](https://github.com/shayanderson/pdom#transactions), [Custom Table Primary Key Column Name](https://github.com/shayanderson/pdom#custom-table-primary-key-column-name), [Query Options](https://github.com/shayanderson/pdom#query-options),<br />
  &nbsp; &nbsp;  &nbsp; &nbsp; [Multiple Database Connections](https://github.com/shayanderson/pdom#multiple-database-connections), [Pagination](https://github.com/shayanderson/pdom#pagination), [Record Class](https://github.com/shayanderson/pdom#record-class)<br />
@@ -51,6 +50,22 @@ catch(\Exception $ex)
 Here is a list of simple PDOm commands:
 
 - [`add`](https://github.com/shayanderson/pdom#insert) - insert record (can also use `insert`)
+- [`call`](https://github.com/shayanderson/pdom#call-stored-procedurefunction-routines) - call stored procedure or function
+- [`columns`](https://github.com/shayanderson/pdom#show-table-columns) - show table columns
+- [`commit`](https://github.com/shayanderson/pdom#transactions) - commit transaction
+- [`count`](https://github.com/shayanderson/pdom#count-query) - count table records
+- [`del`](https://github.com/shayanderson/pdom#delete) - delete record(s) (can also use `delete`)
+- [`error`](https://github.com/shayanderson/pdom#error-checking) - check if error has occurred
+- [`error_last`](https://github.com/shayanderson/pdom#get-last-error) - get last error, when error has occurred
+- [`id`](https://github.com/shayanderson/pdom#insert-with-insert-id) - get last insert ID
+- [`key`](https://github.com/shayanderson/pdom#custom-table-primary-key-column-name) - get/set table primary key column name (default 'id')
+- [`log`](https://github.com/shayanderson/pdom#debug-log) - get debug log (debugging must be turned on)
+- [`mod`](https://github.com/shayanderson/pdom#update) - update record(s) (can also use `update`)
+- [`query`](https://github.com/shayanderson/pdom#execute-query) - execute manual query
+- [`replace`](https://github.com/shayanderson/pdom#insert) - replace record
+- [`rollback`](https://github.com/shayanderson/pdom#transactions) - rollback transaction
+- [`tables`](https://github.com/shayanderson/pdom#show-tables) - show database tables
+- [`transaction`](https://github.com/shayanderson/pdom#transactions) - start transaction
 
 ### Select
 Simple select queries examples:
