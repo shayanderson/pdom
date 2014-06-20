@@ -55,20 +55,20 @@ Simple select queries examples:
 ```php
 $r = pdom('users'); // SELECT * FROM users
 $r = pdom('users(fullname, email)'); // SELECT fullname, email FROM users
-$r = pdom('users', 'LIMIT 1'); // SELECT * FROM users LIMIT 1
+$r = pdom('users LIMIT 1'); // SELECT * FROM users LIMIT 1
 ```
 
 ### Select Where
 Select query with named parameters:
 ```php
 // SELECT fullname, email FROM users WHERE is_active = '1' AND fullname = 'Shay Anderson'
-$r = pdom('users(fullname, email)', 'WHERE is_active = :active AND fullname = :name LIMIT 2', 
+$r = pdom('users(fullname, email) WHERE is_active = :active AND fullname = :name LIMIT 2', 
 	['active' => 1, 'name' => 'Shay Anderson']);
 ```
 Select query with question mark parameters:
 ```php
 // SELECT fullname, email FROM users WHERE is_active = 1 AND fullname = 'Shay Anderson' LIMIT 2
-$r = pdom('users(fullname, email)', 'WHERE is_active = ? AND fullname = ? LIMIT 2', 
+$r = pdom('users(fullname, email) WHERE is_active = ? AND fullname = ? LIMIT 2', 
 	[1, 'Shay Anderson']);
 ```
 
@@ -78,8 +78,12 @@ Select queries with primary key value:
 $r = pdom('users.2'); // SELECT * FROM users WHERE id = '2'
 
 // using plain SQL in query example
-// SELECT fullname, is_active FROM users WHERE id = '2' AND created > NOW()
-$r = pdom('users(fullname, is_active).2', 'AND created > ? LIMIT 1', ['NOW()']);
+// SELECT fullname, is_active FROM users WHERE id = '2' AND fullname = 'Shay'
+$r = pdom('users(fullname, is_active).2 WHERE fullname = :name LIMIT 1', ['name' = > 'Shay']);
+```
+>**Note:** when selecting with key use integer values only, for example:
+```php
+$r = pdom('users.' . (int)$id);
 ```
 
 ### Select Distinct
@@ -358,7 +362,7 @@ pdom(['host' => 'host2.server.com',
 // or manually set connection ID
 pdom(['host' => 'host5.server.com',
 	// more here
-	'id' => 5 // manually set ID
+	'id' => 5 // manually set ID (int only)
 ]);
 ```
 > **Note:** manually set ID must be integer
