@@ -361,6 +361,8 @@ pdom(['host' => 'host5.server.com',
 	'id' => 5 // manually set ID
 ]);
 ```
+> **Note:** manually set ID must be integer
+
 Now to use different connections:
 ```php
 // select from connection 1 / default connection
