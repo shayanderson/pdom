@@ -342,8 +342,8 @@ $r = pdom('users(fullname)/distinct/query'); // returns string 'SELECT DISTINCT 
 Options can be chained together to complete valid MySQL statements:
 ```php
 // UPDATE LOW_PRIORITY IGNORE users SET fullname = 'Shay Anderson' WHERE user_id = '2'
-$affected_rows = pdom('users:mod/low_priority/ignore WHERE user_id = :user_id', ['fullname' => 'Shay Anderson'],
-	['user_id' => 2]);
+$affected_rows = pdom('users:mod/low_priority/ignore WHERE user_id = :user_id',
+	['fullname' => 'Shay Anderson'], ['user_id' => 2]);
 ```
 
 ### Multiple Database Connections
