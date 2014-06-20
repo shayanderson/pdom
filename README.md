@@ -21,6 +21,14 @@ Here is a list of PDOm commands:
 - [`tables`](https://github.com/shayanderson/pdom#show-tables) - show database tables
 - [`transaction`](https://github.com/shayanderson/pdom#transactions) - start transaction
 
+PDOm also supports:
+
+- [Custom primary key name](https://github.com/shayanderson/pdom#custom-table-primary-key-column-name)
+- [Query options](https://github.com/shayanderson/pdom#query-options)
+- [Multiple database connections](https://github.com/shayanderson/pdom#multiple-database-connections)
+- [Pagination](https://github.com/shayanderson/pdom#pagination)
+- [Record Class](https://github.com/shayanderson/pdom#record-class)
+
 ## Quick Start
 Edit the `pdom.bootstrap.php` file and add your database connection params:
 ```php
