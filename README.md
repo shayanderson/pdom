@@ -288,24 +288,6 @@ Show table columns query example:
 $columns = pdom('users:columns'); // returns array of table column names
 ```
 
-#### Truncate Table
-Trunacte table query example:
-```php
-pdom('users:truncate'); // truncate table 'users'
-```
-
-#### Optimize Table
-Optimize table query example:
-```php
-pdom('users:optimize'); // optimize table 'users'
-```
-
-#### Repair Table
-Repair table query example:
-```php
-pdom('users:repair'); // repair table 'users'
-```
-
 #### Debug Log
 Get debug log array example:
 ```php
