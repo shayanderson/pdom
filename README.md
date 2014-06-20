@@ -1,7 +1,7 @@
 # PDOm
 #### PDO Wrapper with MySQL Helper
 
-Here is a list of simple PDOm commands:
+Here is a list of PDOm commands:
 
 - [`add`](https://github.com/shayanderson/pdom#insert) - insert record (can also use `insert`)
 - [`call`](https://github.com/shayanderson/pdom#call-stored-procedurefunction-routines) - call stored procedure or function
