@@ -67,7 +67,7 @@ Here is a list of simple PDOm commands:
 - [`tables`](https://github.com/shayanderson/pdom#show-tables) - show database tables
 - [`transaction`](https://github.com/shayanderson/pdom#transactions) - start transaction
 
-### Select
+#### Select
 Simple select queries examples:
 ```php
 $r = pdom('users'); // SELECT * FROM users
@@ -75,7 +75,7 @@ $r = pdom('users(fullname, email)'); // SELECT fullname, email FROM users
 $r = pdom('users LIMIT 1'); // SELECT * FROM users LIMIT 1
 ```
 
-### Select Where
+#### Select Where
 Select query with named parameters:
 ```php
 // SELECT fullname, email FROM users WHERE is_active = '1' AND fullname = 'Shay Anderson'
@@ -89,7 +89,7 @@ $r = pdom('users(fullname, email) WHERE is_active = ? AND fullname = ? LIMIT 2',
 	[1, 'Shay Anderson']);
 ```
 
-### Select with Key
+#### Select with Key
 Select queries with primary key value:
 ```php
 $r = pdom('users.2'); // SELECT * FROM users WHERE id = '2'
@@ -103,13 +103,13 @@ $r = pdom('users(fullname, is_active).2 WHERE fullname = :name LIMIT 1', ['name'
 $r = pdom('users.' . (int)$id);
 ```
 
-### Select Distinct
+#### Select Distinct
 Select distinct example query:
 ```php
 $r = pdom('users(fullname)/distinct'); // SELECT DISTINCT fullname FROM users
 ```
 
-### Insert
+#### Insert
 Simple insert example:
 ```php
 // INSERT INTO users (fullname, is_active, created) VALUES('Name Here', '1', NOW())
@@ -126,7 +126,7 @@ $affected_rows = pdom('users:replace', ['id' => 5 'fullname' => 'Name Here',
 	'is_active' => 1, 'created' => ['NOW()']]);
 ```
 
-### Insert with Insert ID
+#### Insert with Insert ID
 Insert query and get insert ID:
 ```php
 // INSERT INTO users (fullname, is_active, created) VALUES('Name Here', '1', NOW())
@@ -136,14 +136,14 @@ pdom('users:add', ['fullname' => 'Name Here', 'is_active' => 1, 'created' => ['N
 $insert_id = pdom(':id');
 ```
 
-### Insert Ignore
+#### Insert Ignore
 Insert ignore query example:
 ```php
 // INSERT IGNORE INTO users (user_id, fullname) VALUES('3', 'Name Here')
 pdom('users:add/ignore', ['user_id' => 3, 'fullname' => 'Name Here']);
 ```
 
-### Inserting Objects
+#### Inserting Objects
 Insert into table using object instead of array:
 ```php
 // note: all class public properties must be table column names
@@ -157,7 +157,7 @@ class User
 $affected_rows = pdom('users:add', new User);
 ```
 
-### Update
+#### Update
 Simple update query example:
 ```php
 // UPDATE users SET fullname = 'Shay Anderson' WHERE user_id = '2'
@@ -168,14 +168,14 @@ $affected_rows = pdom('users:mod WHERE user_id = :user_id', ['fullname' => 'Shay
 // pdom('users:update', ...);
 ```
 
-### Update Ignore
+#### Update Ignore
 Update ignore query example:
 ```php
 // UPDATE IGNORE users SET user_id = '3' WHERE user_id = 6
 $affected_rows = pdom('users:mod/ignore WHERE user_id = 6', ['user_id' => 3]);
 ```
 
-### Delete
+#### Delete
 Delete query examples:
 ```php
 // delete all
@@ -191,14 +191,14 @@ $affected_rows = pdom('users:del WHERE is_active = 1');
 $affected_rows = pdom('users:del WHERE user_id = ?', [29]);
 ```
 
-### Delete Ignore
+#### Delete Ignore
 Delete ignore query example:
 ```php
 // DELETE IGNORE FROM users WHERE user_id = 60
 $affected_rows = pdom('users:del/ignore WHERE user_id = 60');
 ```
 
-### Execute Query
+#### Execute Query
 Execute manual query example:
 ```php
 // execute any query using the 'query' command
@@ -208,7 +208,7 @@ $r = pdom(':query SELECT * FROM users LIMIT 2');
 $r = pdom(':query SELECT * FROM users WHERE user_id = ?', [2]);
 ```
 
-### Count Query
+#### Count Query
 Get back a count (integer) query example:
 ```php
 // returns int of all records
@@ -221,7 +221,7 @@ $count = pdom('users:count WHERE is_active = 1');
 $count = pdom('users:count WHERE user_id > ? AND is_active = ?', [2, 1]);
 ```
 
-### Call Stored Procedure/Function (Routines)
+#### Call Stored Procedure/Function (Routines)
 Call SP/SF example:
 ```php
 pdom(':call sp_name'); // CALL sp_name()
@@ -238,7 +238,7 @@ pdom(':call sp_addUserGetId', 'Name Here', 1, ['NOW()'], ['@out']);
 $r = pdom(':query SELECT @out;');
 ```
 
-### Transactions
+#### Transactions
 Transactions are easy, for example:
 ```php
 pdom(':transaction'); // start transaction (autocommit off)
@@ -271,7 +271,7 @@ catch(\Exception $ex)
 }
 ```
 
-### Custom Table Primary Key Column Name
+#### Custom Table Primary Key Column Name
 By default the primary key column named used when selecting with key is 'id'.
  This can be changed using the 'key' or 'keys' command:
 ```php
@@ -288,43 +288,43 @@ pdom(':key', [
 ]);
 ```
 
-### Show Tables
+#### Show Tables
 Show database tables query example:
 ```php
 $tables = pdom(':tables'); // returns array of tables
 ```
 
-### Show Table Columns
+#### Show Table Columns
 Show table columns query example:
 ```php
 $columns = pdom('users:columns'); // returns array of table column names
 ```
 
-### Truncate Table
+#### Truncate Table
 Trunacte table query example:
 ```php
 pdom('users:truncate'); // truncate table 'users'
 ```
 
-### Optimize Table
+#### Optimize Table
 Optimize table query example:
 ```php
 pdom('users:optimize'); // optimize table 'users'
 ```
 
-### Repair Table
+#### Repair Table
 Repair table query example:
 ```php
 pdom('users:repair'); // repair table 'users'
 ```
 
-### Debug Log
+#### Debug Log
 Get debug log array example:
 ```php
 $log = pdom(':log'); // returns array of debug log messages
 ```
 
-### Error Checking
+#### Error Checking
 Check if error has occurred example:
 ```php
 if(pdom(':error'))
@@ -333,7 +333,7 @@ if(pdom(':error'))
 }
 ```
 
-### Get Last Error
+#### Get Last Error
 Get last error string example:
 ```php
 if(pdom(':error'))
@@ -342,13 +342,13 @@ if(pdom(':error'))
 }
 ```
 
-### Debugging
+#### Debugging
 To display all registered connections, mapped keys, debug log and errors use:
 ```php
 print_r( pdom(null) ); // returns array with debug info
 ```
 
-### Query Options
+#### Query Options
 Query options are used like: *table:command/[option]* and can be used with SELECT commands and these commands:
 *add/insert*, *call*, *del/delete*, *mod/update*
 
@@ -369,7 +369,7 @@ $affected_rows = pdom('users:mod/low_priority/ignore WHERE user_id = :user_id',
 	['fullname' => 'Shay Anderson'], ['user_id' => 2]);
 ```
 
-### Multiple Database Connections
+#### Multiple Database Connections
 Using multiple database connections is easy, register database connections in bootstrap:
 ```php
 // connection 1 (default connection)
@@ -399,7 +399,7 @@ $r = pdom('users.2'); // SELECT * FROM users WHERE id = '2'
 $r2 = pdom('[2]users.2'); // SELECT * FROM users WHERE id = '2'
 ```
 
-### Pagination
+#### Pagination
 Pagination is easy to use for large select queries, here is an example:
 ```php
 // set current page number, for this example use GET parameter 'pg'
@@ -415,7 +415,7 @@ $r = pdom('users(id, fullname)/distinct/pagination WHERE LENGTH(fullname) > ?', 
 // $r['rows'] contains selected rows
 ```
 
-### Record Class
+#### Record Class
 The \Pdom\Record class can be used to simplify record actions, here are examples:
 ```php
 // make sure to include \Pdom\Record class file in bootstrap
