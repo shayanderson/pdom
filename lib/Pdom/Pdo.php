@@ -33,11 +33,11 @@ class Pdo
 	 * @var array
 	 */
 	private $__conf = [
-		'debug' => false,
+		'debug' => true,
 		'error_handler' => null,
 		'errors' => true,
 		'log_handler' => null,
-		'objects' => true,
+		'objects' => true
 	];
 
 	/**

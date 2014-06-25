@@ -16,10 +16,10 @@ pdom([
 	'password' => 'mypass',
 
 	// display errors (default true)
-	'errors' => true,
+	// 'errors' => false,
 
-	// debug messages and errors to log (default false)
-	'debug' => true,
+	// debug messages and errors to log (default true)
+	// 'debug' => false,
 
 	// return objects instead of arrays (default true)
 	// 'objects' => false
