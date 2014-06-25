@@ -289,6 +289,7 @@ Get debug log array example:
 ```php
 $log = pdom(':log'); // returns array of debug log messages
 ```
+> Debug mode must be enabled for this example
 
 #### Error Checking
 Check if error has occurred example:
@@ -298,6 +299,7 @@ if(pdom(':error'))
 	// do something
 }
 ```
+> For error checking errors must be disabled, otherwise exception is thrown
 
 #### Get Last Error
 Get last error string example:
@@ -307,6 +309,7 @@ if(pdom(':error'))
 	echo pdom(':error_last');
 }
 ```
+> For getting last error message errors must be disabled, otherwise exception is thrown
 
 #### Debugging
 To display all registered connections, mapped keys, debug log and errors use:
@@ -314,6 +317,7 @@ To display all registered connections, mapped keys, debug log and errors use:
 print_r( pdom(null) ); // returns array with debug info
 ```
 
+## Advanced
 #### Custom Table Primary Key Column Name
 By default the primary key column named used when selecting with key is 'id'.
  This can be changed using the 'key' or 'keys' command:
