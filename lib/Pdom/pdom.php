@@ -162,7 +162,14 @@ function pdom($cmd, $_ = null)
 				{
 					if(!empty($stmt)) // table.[id] match, return first record
 					{
-						return @Pdo::connection($id)->query($q, $params)[0];
+						$r = Pdo::connection($id)->query($q, $params);
+
+						if(isset($r[0]))
+						{
+							return $r[0];
+						}
+
+						return null; // no record
 					}
 					else
 					{

@@ -34,8 +34,10 @@ class Pdo
 	 */
 	private $__conf = [
 		'debug' => false,
+		'error_handler' => null,
 		'errors' => true,
-		'objects' => true
+		'log_handler' => null,
+		'objects' => true,
 	];
 
 	/**
@@ -138,16 +140,24 @@ class Pdo
 		$message = 'Error: ' . $message;
 		$this->__is_error = true;
 		$this->__last_error = $message;
-		$this->__log($message);
 
 		if($this->__conf['errors'])
 		{
-			if($this->__conf['debug'])
+			if($this->__conf['error_handler'] !== null && is_callable($this->__conf['error_handler']))
 			{
-				print_r($this->log());
+				$this->__conf['error_handler']($message); // custom error handler
 			}
+			else
+			{
+				$this->__log($message);
 
-			throw new \Exception('Pdom: ' . $message);
+				if($this->__conf['debug'] && $this->__conf['log_handler'] === null)
+				{
+					print_r($this->log()); // print debug log
+				}
+
+				throw new \Exception('Pdom: ' . $message);
+			}
 		}
 	}
 
@@ -199,7 +209,14 @@ class Pdo
 	{
 		if($this->__conf['debug'])
 		{
-			$this->__log[] = $message;
+			if($this->__conf['log_handler'] !== null && is_callable($this->__conf['log_handler']))
+			{
+				$this->__conf['log_handler']($message); // custom log handler
+			}
+			else
+			{
+				$this->__log[] = $message;
+			}
 		}
 	}
 

@@ -24,6 +24,8 @@ Here is a list of PDOm commands:
 PDOm also supports:
 
 - [Custom primary key name](https://github.com/shayanderson/pdom#custom-table-primary-key-column-name)
+- [Custom log handler](https://github.com/shayanderson/pdom#custom-log-handler)
+- [Custom error handler](https://github.com/shayanderson/pdom#custom-error-handler)
 - [Query options](https://github.com/shayanderson/pdom#query-options)
 - [Multiple database connections](https://github.com/shayanderson/pdom#multiple-database-connections)
 - [Pagination](https://github.com/shayanderson/pdom#pagination)
@@ -269,23 +271,6 @@ catch(\Exception $ex)
 }
 ```
 
-#### Custom Table Primary Key Column Name
-By default the primary key column named used when selecting with key is 'id'.
- This can be changed using the 'key' or 'keys' command:
-```php
-// register 'user_id' as primary key column name for table 'users'
-pdom('users:key user_id');
-
-// now 'WHERE id = 2' becomes 'WHERE user_id = 2'
-$r = pdom('users.2'); // SELECT * FROM users WHERE user_id = '2'
-
-// also register multiple key column names:
-pdom(':key', [
-	'users' => 'user_id',
-	'orders' => 'order_id'
-]);
-```
-
 #### Show Tables
 Show database tables query example:
 ```php
@@ -327,6 +312,51 @@ To display all registered connections, mapped keys, debug log and errors use:
 ```php
 print_r( pdom(null) ); // returns array with debug info
 ```
+
+#### Custom Table Primary Key Column Name
+By default the primary key column named used when selecting with key is 'id'.
+ This can be changed using the 'key' or 'keys' command:
+```php
+// register 'user_id' as primary key column name for table 'users'
+pdom('users:key user_id');
+
+// now 'WHERE id = 2' becomes 'WHERE user_id = 2'
+$r = pdom('users.2'); // SELECT * FROM users WHERE user_id = '2'
+
+// also register multiple key column names:
+pdom(':key', [
+	'users' => 'user_id',
+	'orders' => 'order_id'
+]);
+```
+
+#### Custom Log Handler
+A custom log handler can be used when setting a database connection, for example:
+```php
+// register database connection
+pdom([
+	// database connection params
+	'host' => 'localhost',
+	...
+	'debug' => true, // debugging must be enabled for log handler
+	// register custom log handler (must be callable)
+	'log_handler' => function($msg) { echo '<b>Message:</b> ' . $msg . '<br />'; }
+```
+Now all PDOm log messages will be sent to the custom callable log handler.
+
+#### Custom Error Handler
+A custom error handler can be used when setting a database connection, for example:
+```php
+// register database connection
+pdom([
+	// database connection params
+	'host' => 'localhost',
+	...
+	'errors' => true, // errors must be enabled for error handler
+	// register custom error handler (must be callable)
+	'error_handler' => function($err) { echo '<b>Error:</b> ' . $err . '<br />'; }
+```
+Now all PDOm error messages will be sent to the custom callable error handler.
 
 #### Query Options
 Query options are used like: `table:command/[option]` and can be used with `SELECT` commands and these commands:
