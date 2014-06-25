@@ -102,6 +102,7 @@ $r = pdom('users(fullname, is_active).2 WHERE fullname = ? LIMIT 1', ['Name']);
 ```php
 $r = pdom('users.' . (int)$id);
 ```
+<quoteblock>The default primary key column name is <code>id</code>, for using different primary key column name see [custom table primary key column name](https://github.com/shayanderson/pdom#custom-table-primary-key-column-name)</quoteblock>
 
 #### Select Distinct
 Select distinct example query:
