@@ -137,7 +137,6 @@ class Pdo
 	 */
 	private function __error($message)
 	{
-		$message = 'Error: ' . $message;
 		$this->__is_error = true;
 		$this->__last_error = $message;
 
@@ -149,7 +148,7 @@ class Pdo
 			}
 			else
 			{
-				$this->__log($message);
+				$this->__log('Error: ' . $message);
 
 				if($this->__conf['debug'] && $this->__conf['log_handler'] === null)
 				{
