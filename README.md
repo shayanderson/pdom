@@ -89,8 +89,8 @@ $r = pdom('users(fullname, email) WHERE is_active = ? AND fullname = ? LIMIT 2',
 Select queries with primary key value:
 ```php
 $r = pdom('users.2'); // SELECT * FROM users WHERE id = '2'
-// test if user exists
-if($r) echo $user->fullname;
+// test if record exists + display value for column 'fullname'
+if($r) echo $r->fullname;
 
 // using plain SQL in query example
 // SELECT fullname, is_active FROM users WHERE id = '2' AND fullname = 'Shay'
