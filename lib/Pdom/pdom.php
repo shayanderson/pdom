@@ -8,7 +8,7 @@
  *	- Database table names cannot include characters '.', '/', ':' or ' ' (whitespace)
  * 
  * @package PDOm
- * @version 0.0.4
+ * @version 0.0.5
  * @copyright 2014 Shay Anderson <http://www.shayanderson.com>
  * @license MIT License <http://www.opensource.org/licenses/mit-license.php>
  * @link <https://github.com/shayanderson/pdom>
@@ -160,7 +160,14 @@ function pdom($cmd, $_ = null)
 			{
 				if(!$is_pagination)
 				{
-					return Pdo::connection($id)->query($q, $params);
+					if(!empty($stmt)) // table.[id] match, return first record
+					{
+						return @Pdo::connection($id)->query($q, $params)[0];
+					}
+					else
+					{
+						return Pdo::connection($id)->query($q, $params);
+					}
 				}
 				else
 				{

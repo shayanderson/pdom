@@ -53,7 +53,7 @@ Now execute SELECT query:
 try
 {
 	$user = pdom('users.14'); // same as "SELECT * FROM users WHERE id = '14'"
-	echo $user[0]->fullname; // print record field value
+	if($user) echo $user->fullname; // print record field value
 }
 catch(\Exception $ex)
 {
@@ -89,12 +89,14 @@ $r = pdom('users(fullname, email) WHERE is_active = ? AND fullname = ? LIMIT 2',
 Select queries with primary key value:
 ```php
 $r = pdom('users.2'); // SELECT * FROM users WHERE id = '2'
+// test if user exists
+if($r) echo $user->fullname;
 
 // using plain SQL in query example
 // SELECT fullname, is_active FROM users WHERE id = '2' AND fullname = 'Shay'
 $r = pdom('users(fullname, is_active).2 WHERE fullname = :name LIMIT 1', ['name' = > 'Name Here']);
 ```
->**Note:** when selecting with key use integer values only, for example:
+> When selecting with key use integer values only, for example:
 ```php
 $r = pdom('users.' . (int)$id);
 ```
