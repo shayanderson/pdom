@@ -98,11 +98,11 @@ if($r) echo $r->fullname;
 // SELECT fullname, is_active FROM users WHERE id = '2' AND fullname = 'Shay'
 $r = pdom('users(fullname, is_active).2 WHERE fullname = ? LIMIT 1', ['Name']);
 ```
+<quoteblock>The default primary key column name is <code>id</code>, for using different primary key column name see [custom table primary key column name](https://github.com/shayanderson/pdom#custom-table-primary-key-column-name)</quoteblock>
 > When selecting with key use integer values only, for example:
 ```php
 $r = pdom('users.' . (int)$id);
 ```
-<quoteblock>The default primary key column name is <code>id</code>, for using different primary key column name see [custom table primary key column name](https://github.com/shayanderson/pdom#custom-table-primary-key-column-name)</quoteblock>
 
 #### Select Distinct
 Select distinct example query:
