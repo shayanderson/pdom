@@ -8,7 +8,7 @@
  *	- Database table names cannot include characters '.', '/', ':' or ' ' (whitespace)
  * 
  * @package PDOm
- * @version 0.0.5
+ * @version 0.0.6
  * @copyright 2014 Shay Anderson <http://www.shayanderson.com>
  * @license MIT License <http://www.opensource.org/licenses/mit-license.php>
  * @link <https://github.com/shayanderson/pdom>
@@ -374,7 +374,7 @@ class Pdo
 	public function query($query, $params = null)
 	{
 		$this->__log('Query: ' . $query);
-		if(is_array($params) && count($params) > 0)
+		if($this->__conf['debug'] && is_array($params) && count($params) > 0) // log query param values
 		{
 			$q_params = [];
 			foreach($params as $k => $v)

@@ -8,7 +8,7 @@
  *	- Database table names cannot include characters '.', '/', ':' or ' ' (whitespace)
  * 
  * @package PDOm
- * @version 0.0.5
+ * @version 0.0.6
  * @copyright 2014 Shay Anderson <http://www.shayanderson.com>
  * @license MIT License <http://www.opensource.org/licenses/mit-license.php>
  * @link <https://github.com/shayanderson/pdom>
@@ -56,7 +56,7 @@ function pdom($cmd, $_ = null)
 		static $pagination = ['rpp' => 10, 'page' => 1];
 		$params = [];
 		$option = $sql = '';
-		$is_return_qs = $is_pagination = false;
+		$flags = 0x0; // query=0x1, pagination=0x2, first=0x4
 
 		if($cmd[0] === '[' && preg_match('/^\[(\d+)\]/', $cmd, $m)) // match '[id]table', connection ID
 		{
@@ -70,17 +70,23 @@ function pdom($cmd, $_ = null)
 			foreach($m[1] as $opt)
 			{
 				$opt = strtoupper($opt);
-				if($opt === 'QUERY') // return query only
+				switch($opt)
 				{
-					$is_return_qs = true;
-				}
-				else if($opt === 'PAGINATION')
-				{
-					$is_pagination = true;
-				}
-				else
-				{
-					$option .= ' ' . $opt;
+					case 'FIRST':
+						$flags |= 0x4;
+						break;
+
+					case 'PAGINATION':
+						$flags |= 0x2;
+						break;
+
+					case 'QUERY';
+						$flags |= 0x1;
+						break;
+
+					default:
+						$option .= ' ' . $opt;
+						break;
 				}
 			}
 
@@ -135,7 +141,7 @@ function pdom($cmd, $_ = null)
 
 			$q = 'SELECT' . $option . ' ' . $columns . ' FROM ' . $cmd . $stmt . $sql;
 
-			if($is_pagination)
+			if($flags & 0x2)
 			{
 				// match 'LIMIT x, y (OFFSET z)?', only allow if no LIMIT
 				if(!preg_match('/LIMIT[\s\d,]+(OFFSET[\s\d]+)?$/i', $q))
@@ -152,15 +158,15 @@ function pdom($cmd, $_ = null)
 				}
 			}
 
-			if($is_return_qs)
+			if($flags & 0x1) // query as string
 			{
 				return $q;
 			}
 			else
 			{
-				if(!$is_pagination)
+				if($flags ^ 0x2)
 				{
-					if(!empty($stmt)) // table.[id] match, return first record
+					if(!empty($stmt) || $flags & 0x4) // table.[id] match or /first option, return first record
 					{
 						$r = Pdo::connection($id)->query($q, $params);
 
@@ -178,6 +184,7 @@ function pdom($cmd, $_ = null)
 				}
 				else
 				{
+					pa('yes1');
 					$r = Pdo::connection($id)->query($q, $params);
 
 					if(count($r) > $p['rpp'])
@@ -244,7 +251,7 @@ function pdom($cmd, $_ = null)
 						. implode(', ', array_keys($args[0])) . ') VALUES('
 						. implode(', ', $values) . ')';
 
-					if($is_return_qs)
+					if($flags & 0x1)
 					{
 						return $q;
 					}
@@ -273,7 +280,7 @@ function pdom($cmd, $_ = null)
 
 					$q = 'CALL' . $sql . '(' . $params_str . ')';
 
-					if($is_return_qs)
+					if($flags & 0x1)
 					{
 						return $q;
 					}
@@ -321,7 +328,7 @@ function pdom($cmd, $_ = null)
 				case 'delete':
 					$q = 'DELETE' . $option . ' FROM ' . $table . $sql;
 
-					if($is_return_qs)
+					if($flags & 0x1)
 					{
 						return $q;
 					}
@@ -401,7 +408,7 @@ function pdom($cmd, $_ = null)
 
 					$q = 'UPDATE' . $option . ' ' . $table . ' SET ' . implode(', ', $values) . $sql;
 
-					if($is_return_qs)
+					if($flags & 0x1)
 					{
 						return $q;
 					}
