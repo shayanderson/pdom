@@ -372,11 +372,20 @@ Example of option use:
 $r = pdom('users(fullname)/distinct'); // DISTINCT option
 ```
 
+Options can be chained together to complete valid MySQL statements:
+```php
+// UPDATE LOW_PRIORITY IGNORE users SET fullname = 'Shay Anderson' WHERE user_id = '2'
+$affected_rows = pdom('users:mod/low_priority/ignore WHERE user_id = :user_id',
+	['fullname' => 'Shay Anderson'], ['user_id' => 2]);
+```
+
+##### Query Option
 The `query` option can be used to return the query string only, without executing the query (for debugging), for example:
 ```php
 $r = pdom('users(fullname)/distinct/query'); // returns string 'SELECT DISTINCT fullname FROM users'
 ```
 
+##### First Option
 The `first` option can be used to return the first record only, for example:
 ```php
 $user = pdom('users/first WHERE is_active = 1');
@@ -385,13 +394,6 @@ if($user) echo $user->fullname;
 This can simplify using the first record only instead of having to use:
 ```php
 if(isset($user[0])) echo $user[0]->fullname;
-```
-
-Options can be chained together to complete valid MySQL statements:
-```php
-// UPDATE LOW_PRIORITY IGNORE users SET fullname = 'Shay Anderson' WHERE user_id = '2'
-$affected_rows = pdom('users:mod/low_priority/ignore WHERE user_id = :user_id',
-	['fullname' => 'Shay Anderson'], ['user_id' => 2]);
 ```
 
 #### Multiple Database Connections
