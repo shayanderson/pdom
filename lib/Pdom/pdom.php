@@ -121,7 +121,7 @@ function pdom($cmd, $_ = null)
 			}
 
 			$stmt = '';
-			if(strpos($cmd, '.') !== false && preg_match('/^[\w]+\.([\w]+)$/', $cmd, $m)) // match 'table.[id]'
+			if(strpos($cmd, '.') !== false && preg_match('/^[\w]+\.([\d]+)$/', $cmd, $m)) // match 'table.[id]'
 			{
 				$cmd = substr($cmd, 0, strpos($cmd, '.')); // rm ID
 
