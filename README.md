@@ -1,4 +1,4 @@
-# This project has been moved to [Xap](https://github.com/shayanderson/pdom)
+# This project is no longer supported and has been moved to [Xap](https://github.com/shayanderson/pdom)
 
 # PDOm
 #### PDO Wrapper with MySQL Helper
